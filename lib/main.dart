@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+// import 'package:flutter_demo_app/pages/getData.dart';
+import 'package:flutter_demo_app/pages/profile.dart';
 import 'package:flutter_demo_app/utils/routes.dart';
 import 'pages/homepage.dart';
 import 'pages/login_page.dart';
@@ -24,14 +26,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       routes: {
-        // "/": (context) => LoginPage(), // HomePage
+        "/": (context) => Profile(), // HomePage
         // "/scrren1": (context) => const Screen1(),
         // "/home": (context) => const HomePage(),
 
-        "/": (context) => LoginPage(),
+        // "/": (context) => getData(),
+        // LoginPage(),
         MyRoutes.homeRoute: (context) => HomePage(),
         MyRoutes.loginRoute: (context) => LoginPage(),
-        MyRoutes.loginRoute: (context) => Screen1()
+        MyRoutes.loginRoute: (context) => Screen1(),
       },
     );
   }

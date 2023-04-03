@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import '../pages/profile.dart';
+import '../pages/profile.dart';
 import '../pages/screen1.dart';
 import '../pages/homepage.dart';
 
@@ -49,7 +51,22 @@ class MyDrawer extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => Screen1()));
             },
-          )
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.info,
+              color: Colors.black,
+            ),
+            title: Text(
+              "GetData",
+              textScaleFactor: 1.2,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => Profile()));
+            },
+          ),
         ],
       ),
     );

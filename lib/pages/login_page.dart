@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import '../utils/routes.dart';
 
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -63,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: "Username",
                         ),
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return "Username cannot be empty";
                           }
                           return null;
