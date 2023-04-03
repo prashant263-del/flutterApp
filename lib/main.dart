@@ -7,6 +7,7 @@ import 'package:flutter_demo_app/utils/routes.dart';
 import 'pages/homepage.dart';
 import 'pages/login_page.dart';
 import 'pages/screen1.dart';
+
 // import 'pages/homepage.dart';
 
 void main() {
@@ -26,14 +27,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       routes: {
-        "/": (context) => Profile(), // HomePage
+        "/": (context) => LoginPage(), // HomePage
         // "/scrren1": (context) => const Screen1(),
         // "/home": (context) => const HomePage(),
 
         // "/": (context) => getData(),
         // LoginPage(),
         MyRoutes.homeRoute: (context) => HomePage(),
-        MyRoutes.loginRoute: (context) => LoginPage(),
+        MyRoutes.loginRoute: (context) => Profile(),
         MyRoutes.loginRoute: (context) => Screen1(),
       },
     );

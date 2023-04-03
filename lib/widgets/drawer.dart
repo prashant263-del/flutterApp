@@ -2,8 +2,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_app/pages/login_page.dart';
 // import '../pages/profile.dart';
-import '../pages/profile.dart';
+import '../pages/getData.dart';
+import '../pages/profile_old.dart';
 import '../pages/screen1.dart';
 import '../pages/homepage.dart';
 
@@ -64,9 +66,39 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => GetData()));
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.info,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Profile",
+              textScaleFactor: 1.2,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => Profile()));
             },
           ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.info,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Logout",
+              textScaleFactor: 1.2,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => LoginPage()));
+            },
+          )
         ],
       ),
     );

@@ -1,110 +1,124 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_spinkit/flutter_spinkit.dart';
-// import 'package:provider/provider.dart';
-// import 'package:provider_rest_api/providers/pets_provider.dart';
+import 'dart:convert';
 
-// class HomePage extends StatefulWidget {
-//   const HomePage({super.key});
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-//   @override
-//   State<HomePage> createState() => _HomePageState();
-// }
+import '../widgets/drawer.dart';
+// test commit
 
-// class _HomePageState extends State<HomePage> {
-//   @override
-//   void initState() {
-//     final provider = Provider.of<PetsProvider>(context, listen: false);
-//     provider.getDataFromAPI();
-//     super.initState();
-//   }
+class GetData extends StatefulWidget {
+  @override
+  _GetDataState createState() => _GetDataState();
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     // log('build called');
-//     final provider = Provider.of<PetsProvider>(context);
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Provider API Call'),
-//         centerTitle: true,
-//       ),
-//       body: provider.isLoading
-//           ? getLoadingUI()
-//           : provider.error.isNotEmpty
-//               ? getErrorUI(provider.error)
-//               : getBodyUI(),
-//     );
-//   }
+class _GetDataState extends State<GetData> {
+  static const header = 'Profile';
+  // commonDialog dialog = new commonDialog();
+  List _loadedData = [];
 
-//   Widget getLoadingUI() {
-//     return Center(
-//       child: Column(
-//         mainAxisSize: MainAxisSize.min,
-//         children: const [
-//           SpinKitFadingCircle(
-//             color: Colors.blue,
-//             size: 80,
-//           ),
-//           Text(
-//             'Loading...',
-//             style: TextStyle(fontSize: 20, color: Colors.blue),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
+  Future<void> _fetchData() async {
+    const apiUrl =
+        'https://hclwdc701d.execute-api.ap-south-1.amazonaws.com/Development/fluttertest';
 
-//   Widget getErrorUI(String error) {
-//     return Center(
-//       child: Text(
-//         error,
-//         style: const TextStyle(color: Colors.red, fontSize: 22),
-//       ),
-//     );
-//   }
+    final response = await http.get(Uri.parse(apiUrl));
+    final data = json.decode("[" + response.body + "]");
+    print(data[0]['body']['header']);
+    setState(() {
+      _loadedData = data[0]['body']['header'];
+    });
+  }
 
-//   Widget getBodyUI() {
-//     final provider = Provider.of<PetsProvider>(context, listen: false);
-//     return Column(
-//       children: [
-//         Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: TextField(
-//             onChanged: (value) {
-//               provider.search(value);
-//             },
-//             decoration: InputDecoration(
-//               hintText: 'Search',
-//               border: OutlineInputBorder(
-//                 borderRadius: BorderRadius.circular(10),
-//               ),
-//               suffixIcon: const Icon(Icons.search),
-//             ),
-//           ),
-//         ),
-//         Expanded(
-//           child: Consumer(
-//             builder: (context, PetsProvider petsProvider, child) =>
-//                 ListView.builder(
-//               itemCount: petsProvider.serachedPets.data.length,
-//               itemBuilder: (context, index) => ListTile(
-//                 leading: CircleAvatar(
-//                   radius: 22,
-//                   backgroundImage: NetworkImage(
-//                       petsProvider.serachedPets.data[index].petImage),
-//                   backgroundColor: Colors.white,
-//                 ),
-//                 title: Text(petsProvider.serachedPets.data[index].userName),
-//                 trailing: petsProvider.serachedPets.data[index].isFriendly
-//                     ? const SizedBox()
-//                     : const Icon(
-//                         Icons.pets,
-//                         color: Colors.red,
-//                       ),
-//               ),
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        drawer: const MyDrawer(),
+        appBar: AppBar(
+          title: const Text(header),
+          backgroundColor: Colors.blue,
+        ),
+        body: SafeArea(
+            child: _loadedData.isEmpty
+                ? Center(
+                    child: ElevatedButton(
+                      onPressed: _fetchData,
+                      child: const Text('Load Data'),
+                    ),
+                  )
+                // The ListView that displays photos
+                :
+                // ListView.builder(
+                //     itemCount: _loadedData.length,
+                //     itemBuilder: (BuildContext ctx, index) {
+                //       return Column(children: [
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Fname']),
+                //         ),
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Lname']),
+                //         ),
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Title']),
+                //         ),
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Ryear']),
+                //         ),
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Description']),
+                //         )
+                //       ]);
+                //     },
+                //   )
+                Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: DataTable(
+                        border: TableBorder.all(color: Colors.black),
+                        // ignore: prefer_const_literals_to_create_immutables
+                        columns: [
+                          DataColumn(
+                            label: Text(
+                              'First Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Last Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Title',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Release Year',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Description',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                        ],
+                        rows: [
+                          for (var rdata in _loadedData)
+                            DataRow(cells: [
+                              DataCell(Text(rdata['Fname'].toString())),
+                              DataCell(Text(rdata['Lname'].toString())),
+                              DataCell(Text((rdata['Title'].toString()))),
+                              DataCell(Text((rdata['Ryear'].toString()))),
+                              DataCell(Text((rdata['Description'].toString()))),
+                            ])
+                        ]))));
+  }
+}

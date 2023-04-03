@@ -1,9 +1,12 @@
 import 'dart:convert';
+// import 'dart:io';
+
 import 'package:flutter/material.dart';
+// import 'package:organic_farm_produce_front_end/dialogs/commonDialog.dart';
+// import 'package:organic_farm_produce_front_end/nav/SideMenu.dart';
 import 'package:http/http.dart' as http;
 
 import '../widgets/drawer.dart';
-// test commit
 
 class Profile extends StatefulWidget {
   @override
@@ -13,7 +16,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   static const header = 'Profile';
   // commonDialog dialog = new commonDialog();
-  List _loadedPhotos = [];
+  List _loadedData = [];
 
   Future<void> _fetchData() async {
     const apiUrl =
@@ -21,9 +24,9 @@ class _ProfileState extends State<Profile> {
 
     final response = await http.get(Uri.parse(apiUrl));
     final data = json.decode("[" + response.body + "]");
-    print(data[0]['body']['header']);
+
     setState(() {
-      _loadedPhotos = data[0]['body']['header'];
+      _loadedData = data[0]['body']['header'];
     });
   }
 
@@ -36,7 +39,7 @@ class _ProfileState extends State<Profile> {
           backgroundColor: Colors.blue,
         ),
         body: SafeArea(
-            child: _loadedPhotos.isEmpty
+            child: _loadedData.isEmpty
                 ? Center(
                     child: ElevatedButton(
                       onPressed: _fetchData,
@@ -44,13 +47,79 @@ class _ProfileState extends State<Profile> {
                     ),
                   )
                 // The ListView that displays photos
-                : ListView.builder(
-                    itemCount: _loadedPhotos.length,
-                    itemBuilder: (BuildContext ctx, index) {
-                      return ListTile(
-                        title: Text(_loadedPhotos[index]['Title']),
-                      );
-                    },
-                  )));
+                :
+                // ListView.builder(
+                //     itemCount: _loadedData.length,
+                //     itemBuilder: (BuildContext ctx, index) {
+                //       return Column(children: [
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Fname']),
+                //         ),
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Lname']),
+                //         ),
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Title']),
+                //         ),
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Ryear']),
+                //         ),
+                //         ListTile(
+                //           title: Text(_loadedData[index]['Description']),
+                //         )
+                //       ]);
+                //     },
+                //   )
+                Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: DataTable(
+                        border: TableBorder.all(color: Colors.black),
+                        columns: [
+                          DataColumn(
+                            label: Text(
+                              'First Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Last Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Title',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Release Year',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Description',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                        ],
+                        rows: [
+                          for (var rdata in _loadedData)
+                            DataRow(cells: [
+                              DataCell(Text(rdata['Fname'].toString())),
+                              DataCell(Text(rdata['Lname'].toString())),
+                              DataCell(Text((rdata['Title'].toString()))),
+                              DataCell(Text((rdata['Ryear'].toString()))),
+                              DataCell(Text((rdata['Description'].toString()))),
+                            ])
+                        ]))));
   }
 }
