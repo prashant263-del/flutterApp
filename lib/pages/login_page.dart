@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import '../utils/routes.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -93,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                           splashColor: Colors.red,
                           onTap: () => moveToHome(context),
                           child: AnimatedContainer(
-                            duration: Duration(seconds: 1),
+                            duration: Duration(milliseconds: 100),
                             width: changeButton ? 50 : 150,
                             height: 50,
                             alignment: Alignment.center,

@@ -9,29 +9,10 @@ class Screen1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: const Text("Info Screen"),
-    //     // backgroundColor: Colors.amber,
-    //   ),
-    //   body: Center(
-    //     child: Container(
-    //       child: const Text(
-    //         "Welcome to the Info Screen ",
-    //         style: TextStyle(
-    //           fontSize: 30,
-    //           fontWeight: FontWeight.bold,
-    //           color: Colors.deepOrangeAccent,
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    //   drawer: const MyDrawer(),
-    // );
     return Scaffold(
       appBar: AppBar(
         title: const Text("Info Screen"),
-        // backgroundColor: Colors.amber,
+        backgroundColor: Colors.amber,
       ),
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraints) {

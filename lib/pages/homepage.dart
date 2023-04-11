@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../widgets/drawer.dart';
 
@@ -13,8 +14,33 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("The Flutter App"),
+
         // backgroundColor: Colors.amber,
       ),
+      // appBar: AppBar(
+      //   title: const Text("The Flutter Application"),
+      //   actions: <Widget>[
+      //     Text("Hi $name"),
+      //     IconButton(
+      //       icon: const Icon(Icons.comment),
+      //       tooltip: 'Comment Icon',
+      //       onPressed: () {},
+      //     ), //IconButton
+      //     IconButton(
+      //       icon: const Icon(Icons.settings),
+      //       tooltip: 'Setting Icon',
+      //       onPressed: () {},
+      //     ), //IconButton
+      //   ], //<Widget>[]
+      //   backgroundColor: Colors.greenAccent[400],
+      //   elevation: 50.0,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.menu),
+      //     tooltip: 'Menu Icon',
+      //     onPressed: () {},
+      //   ),
+      //   systemOverlayStyle: SystemUiOverlayStyle.light,
+      // ), //A
       body: Center(
           child: Container(
         child: SingleChildScrollView(

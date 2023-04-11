@@ -2,10 +2,14 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_demo_app/pages/auditors/auditors_homepage.dart';
 import 'package:flutter_demo_app/pages/login_page.dart';
 // import '../pages/profile.dart';
+import '../pages/auditors/createNewAudit_1.dart';
+import '../pages/auditors/testCode.dart';
 import '../pages/getData.dart';
 import '../pages/profile_old.dart';
+import '../pages/auditors/recentAudits.dart';
 import '../pages/screen1.dart';
 import '../pages/homepage.dart';
 
@@ -21,8 +25,14 @@ class MyDrawer extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: UserAccountsDrawerHeader(
               accountName: Text("Hello Prashant"),
-              accountEmail: Text("prashant@metamiind.com"),
+              accountEmail: Text("prashant@metamind.com"),
             ),
+            // decoration: BoxDecoration(
+            //   image: DecorationImage(
+            //     image: AssetImage(
+            //         "D:/FlutterApp/flutter_tutorials/flutter_demo_app/assets/images/cats.png"),
+            //   ),
+            // ),
           ),
           ListTile(
             leading: Icon(
@@ -51,7 +61,9 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => Screen1()));
+                  builder: (BuildContext context) => MyDropDowns()
+                  // Screen1()
+                  ));
             },
           ),
           ListTile(
@@ -82,6 +94,36 @@ class MyDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => Profile()));
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.info,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Auditors Homepage",
+              textScaleFactor: 1.2,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => RecentAudits()));
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.info,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Create New Audit",
+              textScaleFactor: 1.2,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => NewAudit()));
             },
           ),
           ListTile(
