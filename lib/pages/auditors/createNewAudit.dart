@@ -109,109 +109,180 @@ class _NewAuditState extends State<NewAudit> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              right: BorderSide(
-                color: Colors.grey,
-                width: 1.0,
-              ),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text('Please select company & SDG'),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
-                child: DropdownButton<String>(
-                    // isDense: true,
-                    value: defaultValue,
-                    // isExpanded: false,
-                    // menuMaxHeight: 50,
-                    items: [
-                      const DropdownMenuItem(
-                          child: Text(
-                            "Select Company",
-                          ),
-                          value: ""),
-                      ..._loadedData.map<DropdownMenuItem<String>>((data) {
-                        return DropdownMenuItem(
-                            child: Text(data['Company Name']),
-                            value: data['Company ID']);
-                      }).toList(),
-                    ],
-                    onChanged: (value) {
-                      print("selected Value $value");
-                      getIndustryList(value);
-                      setState(() {
-                        defaultValue = value!;
-                        secondDropDown = '';
-                        _selectedIndex = -1;
-                      });
-                    }),
-              ),
-              Container(
-                height: 300,
-                width: 250,
-                // mainAxisAlignment:MainAxisAlignment.start,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(2, 10, 2, 10),
-                  // child: ListView.builder(
-                  //   itemCount: _loadedIndustryList.length,
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     return Padding(
-                  //       padding: const EdgeInsets.all(10.0),
-                  //       child: Container(
-                  //         height: 100,
-                  //         width: 200,
-                  //         decoration: BoxDecoration(
-                  //           border: Border.all(color: Colors.grey),
-                  //           color: Colors.grey[200],
-                  //         ),
-                  //         child: ListTile(
-                  //           title: Text(_loadedIndustryList[index]['SDG Name']),
-                  //           trailing: Text('Status: In Progress'),
-                  //           subtitle: Text('10% Complete'),
-                  //         ),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  child: ListView.builder(
-                    itemCount: _loadedIndustryList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        color:
-                            _selectedIndex == index ? Colors.green[50] : null,
-                        child: ListTile(
-                          hoverColor: Colors.green[50],
-                          title: Text(_loadedIndustryList[index]['SDG Name']),
-                          subtitle: Text('10% Complete'),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('Status: In Progress'),
-                              SizedBox(width: 5),
-                              Icon(Icons.arrow_forward),
-                            ],
-                          ),
-                          // Icon(Icons.arrow_forward),
-                          onTap: () {
-                            // Do something when the user taps on the ListTile
-                            setState(() {
-                              _selectedIndex = index;
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
+          decoration:
+              // BoxDecoration(
+              //   border: Border(
+              //     right: BorderSide(
+              //       color: Colors.grey,
+              //       width: 1.0,
+              //     ),
+              //   ),
+              // ),
+              //     BoxDecoration(
+              //   borderRadius: BorderRadius.circular(10),
+              //   border: Border.all(
+              //     color: Colors.grey,
+              //     width: 1,
+              //   ),
+              // ),
+              BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: Offset(0, 2), // changes position of shadow
               ),
             ],
           ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Please select company & SDG',
+                  style: TextStyle(fontSize: 15),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+                  child: DropdownButton<String>(
+                      // isDense: true,
+                      value: defaultValue,
+                      // isExpanded: false,
+                      // menuMaxHeight: 50,
+                      items: [
+                        const DropdownMenuItem(
+                            child: Text(
+                              "Select Company",
+                            ),
+                            value: ""),
+                        ..._loadedData.map<DropdownMenuItem<String>>((data) {
+                          return DropdownMenuItem(
+                              child: Text(data['Company Name']),
+                              value: data['Company ID']);
+                        }).toList(),
+                      ],
+                      onChanged: (value) {
+                        print("selected Value $value");
+                        getIndustryList(value);
+                        setState(() {
+                          defaultValue = value!;
+                          secondDropDown = '';
+                          _selectedIndex = -1;
+                        });
+                      }),
+                ),
+                Container(
+                  height: 550,
+                  width: 350,
+                  // mainAxisAlignment:MainAxisAlignment.start,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(2, 10, 2, 10),
+                    // child: ListView.builder(
+                    //   itemCount: _loadedIndustryList.length,
+                    //   itemBuilder: (BuildContext context, int index) {
+                    //     return Padding(
+                    //       padding: const EdgeInsets.all(10.0),
+                    //       child: Container(
+                    //         height: 100,
+                    //         width: 200,
+                    //         decoration: BoxDecoration(
+                    //           border: Border.all(color: Colors.grey),
+                    //           color: Colors.grey[200],
+                    //         ),
+                    //         child: ListTile(
+                    //           title: Text(_loadedIndustryList[index]['SDG Name']),
+                    //           trailing: Text('Status: In Progress'),
+                    //           subtitle: Text('10% Complete'),
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
+                    child: ListView.builder(
+                      itemCount: _loadedIndustryList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          height: 130,
+                          width: 150,
+                          child: Card(
+                            elevation: 8,
+                            color: _selectedIndex == index
+                                ? Colors.green[50]
+                                : null,
+                            child: ListTile(
+                              hoverColor: Colors.green[50],
+                              title:
+                                  Text(_loadedIndustryList[index]['SDG Name']),
+                              subtitle: Padding(
+                                padding: EdgeInsets.only(top: 50),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text('10% Complete'),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 16.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Score: '),
+                                        ],
+                                      ),
+                                    ),
+                                    // SizedBox(width: 16),
+                                    // SizedBox(width: 5),
+                                  ],
+                                ),
+                              ),
+                              // Text('10% Complete'),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text('Status: In Progress'),
+                                  SizedBox(width: 5),
+                                  // Icon(Icons.arrow_forward),
+                                ],
+                              ),
+                              // Icon(Icons.arrow_forward),
+                              onTap: () {
+                                showAuditQues();
+                                // Do something when the user taps on the ListTile
+                                setState(() {
+                                  _selectedIndex = index;
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
         ),
       ),
+    );
+  }
+
+  Widget showAuditQues() {
+    return Row(
+      children: [
+        Text('test'),
+      ],
     );
   }
 }
