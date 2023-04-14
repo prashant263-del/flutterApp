@@ -22,7 +22,7 @@ class NewAudit extends StatefulWidget {
 
 class _NewAuditState extends State<NewAudit> {
   int _selectedIndex = -1;
-
+  int _selectedValue = 1;
   int _selectedSDG = 0;
 
   bool _isIndustry_Selected = false;
@@ -346,86 +346,147 @@ class _NewAuditState extends State<NewAudit> {
           ),
 
           // get questionaire for the selected SDG
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: SizedBox(
-              width: 1150,
-              // height: 600,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, 2), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: _isSDG_Selected
-                    // ? getTemplateForSDG(context)
-                    ? Container(
-                        child: (Column(
-                          // mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              'CSR Questions for : $_selectedSDGName',
-                              style: TextStyle(
-                                fontSize: 24,
-                              ),
+          SizedBox(
+            width: 1160,
+            height: 690,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: Offset(0, 2), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: _isSDG_Selected
+                  // ? getTemplateForSDG(context)
+                  ? Container(
+                      child: (Column(
+                        // mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'CSR Questions for : $_selectedSDGName',
+                            style: TextStyle(
+                              fontSize: 24,
                             ),
-                            SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  for (int x = 0;
-                                      x < 18;
-                                      // x < _loadedAuditTemplatelist.length;
-                                      x++) ...[
-                                    Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      // child: Row(
-                                      //   children: [
-                                      //     Container(
-                                      //       child: Text('Que: $x'),
-                                      //     ),
-                                      //     Container(
-                                      //       decoration: BoxDecoration(
-                                      //           border: Border.all(
-                                      //               width: 1,
-                                      //               color: Colors.black)),
-                                      //       child: Text(
-                                      //           _loadedAuditTemplatelist[x]
-                                      //               ['Questions']),
-                                      //     ),
-                                      //     Container(
-                                      //       child: Text(
-                                      //           _loadedAuditTemplatelist[x]
-                                      //               ['ans_type_id']),
-                                      //     ),
-                                      //   ],
-                                      // ),
+                          ),
+                          SingleChildScrollView(
+                            // height:300,
+                            child: Column(
+                              children: [
+                                for (int x = 0;
+                                    x < 5;
+                                    // x < _loadedAuditTemplatelist.length;
+                                    x++) ...[
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    // child: Row(
+                                    //   children: [
+                                    //     Container(
+                                    //       child: Text('Que: $x'),
+                                    //     ),
+                                    //     Container(
+                                    //       decoration: BoxDecoration(
+                                    //           border: Border.all(
+                                    //               width: 1,
+                                    //               color: Colors.black)),
+                                    //       child: Text(
+                                    //           _loadedAuditTemplatelist[x]
+                                    //               ['Questions']),
+                                    //     ),
+                                    //     Container(
+                                    //       child: Text(
+                                    //           _loadedAuditTemplatelist[x]
+                                    //               ['ans_type_id']),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 0.5,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        ),
+                                      ),
                                       child: Row(
                                         children: [
                                           Expanded(
                                             flex: 1, // 20%
-                                            child: Container(
-                                              child: Text('Que: $x'),
+                                            child: Text('Que: $x'),
+                                          ),
+                                          Expanded(
+                                            flex: 6, // 20%
+                                            child:
+                                                //  Container(
+                                                //   child: Text('Que: Question'),
+                                                // ),
+                                                Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border(
+                                                right: BorderSide(
+                                                    width: 1,
+                                                    color: Colors.black),
+                                              )),
+                                              child: Text(
+                                                  _loadedAuditTemplatelist[x]
+                                                      ['Questions']),
                                             ),
                                           ),
                                           Expanded(
-                                            flex: 1, // 20%
-                                            child: Container(
-                                              child: Text('Que: Question'),
+                                            flex: 3, // 20%
+                                            child:
+                                                // Container(
+                                                //   child: Text('Que: Question'),
+                                                // ),
+                                                Container(
+                                              child: Text(
+                                                  _loadedAuditTemplatelist[x]
+                                                      ['ans_type_id']),
                                             ),
                                           ),
-                                          Expanded(
-                                            flex: 1, // 20%
-                                            child: Container(
-                                              child: Text('Que: Question'),
+                                          if ((_loadedAuditTemplatelist[x]
+                                                  ['ans_type_id']) ==
+                                              '1') ...[
+                                            // ansType1(),
+                                            Row(
+                                              children: [
+                                                Radio(
+                                                  value: 1,
+                                                  groupValue: _selectedValue,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _selectedValue = value!;
+                                                    });
+                                                  },
+                                                ),
+                                                Text('YES'),
+                                              ],
                                             ),
-                                          ),
+                                            Row(
+                                              children: [
+                                                Radio(
+                                                  value: 2,
+                                                  groupValue: _selectedValue,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _selectedValue = value!;
+                                                    });
+                                                  },
+                                                ),
+                                                Text('NO'),
+                                              ],
+                                            ),
+                                          ] else ...[
+                                            Text(
+                                                "A is less than or Equal to 10")
+                                          ]
                                           // Expanded(
                                           //   flex: 6, // 60%
                                           //   child: Container(
@@ -445,79 +506,110 @@ class _NewAuditState extends State<NewAudit> {
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ],
-                                // child: ListView.builder(
-                                //   itemCount: _loadedAuditTemplatelist.length,
-                                //   itemBuilder:
-                                //       (BuildContext context, int index) {
-                                //     return ListTile(
-                                //       title: Text(
-                                //           _loadedAuditTemplatelist[index]
-                                //               ['Questions']),
-                                //     );
-                                //   },
-                                // ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 190,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(80, 0, 20, 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.redAccent),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        RecentAudits()));
-                                      },
-                                      child: const Text("Cancel"),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20.0),
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.greenAccent),
-                                      onPressed: () {},
-                                      child: const Text("Submit"),
-                                    ),
                                   ),
                                 ],
-                              ),
+                              ],
+                              // child: ListView.builder(
+                              //   itemCount: _loadedAuditTemplatelist.length,
+                              //   itemBuilder:
+                              //       (BuildContext context, int index) {
+                              //     return ListTile(
+                              //       title: Text(
+                              //           _loadedAuditTemplatelist[index]
+                              //               ['Questions']),
+                              //     );
+                              //   },
+                              // ),
                             ),
-                          ],
-                        )),
-                      )
-                    : Container(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          ),
+                          SizedBox(
+                            height: 190,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(80, 0, 20, 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.redAccent),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  RecentAudits()));
+                                    },
+                                    child: const Text("Cancel"),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20.0),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.greenAccent),
+                                    onPressed: () {},
+                                    child: const Text("Submit"),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )),
+                    )
+                  : Container(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: Align(
+                          alignment: Alignment.center,
                           child: Text(
                             'Please Select Company & SDG for Audit Questionire!',
                             style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-              ),
+                    ),
             ),
           )
           // End of Questionaire
         ],
       ),
+    );
+  }
+
+  ansType1() {
+    int? _selectedValue = 1;
+
+    Column(
+      children: [
+        Radio(
+          value: 1,
+          groupValue: _selectedValue,
+          onChanged: (value) {
+            setState(() {
+              _selectedValue = value;
+            });
+          },
+        ),
+        Radio(
+          value: 2,
+          groupValue: _selectedValue,
+          onChanged: (value) {
+            setState(() {
+              _selectedValue = value;
+            });
+          },
+        ),
+      ],
     );
   }
 
