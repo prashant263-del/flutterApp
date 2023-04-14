@@ -51,7 +51,7 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(
-              CupertinoIcons.info,
+              CupertinoIcons.news,
               color: Colors.black,
             ),
             title: Text(
@@ -61,41 +61,41 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => MyDropDowns()
+                  builder: (BuildContext context) => NewAudit()
                   // Screen1()
                   ));
             },
           ),
-          ListTile(
-            leading: Icon(
-              CupertinoIcons.info,
-              color: Colors.black,
-            ),
-            title: Text(
-              "GetData",
-              textScaleFactor: 1.2,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => GetData()));
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              CupertinoIcons.info,
-              color: Colors.black,
-            ),
-            title: Text(
-              "Profile",
-              textScaleFactor: 1.2,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => Profile()));
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(
+          //     CupertinoIcons.info,
+          //     color: Colors.black,
+          //   ),
+          //   title: Text(
+          //     "GetData",
+          //     textScaleFactor: 1.2,
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (BuildContext context) => GetData()));
+          //   },
+          // ),
+          // ListTile(
+          //   leading: Icon(
+          //     CupertinoIcons.info,
+          //     color: Colors.black,
+          //   ),
+          //   title: Text(
+          //     "Profile",
+          //     textScaleFactor: 1.2,
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (BuildContext context) => Profile()));
+          //   },
+          // ),
           ListTile(
             leading: Icon(
               CupertinoIcons.info,
@@ -124,6 +124,21 @@ class MyDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => NewAudit()));
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.info,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Test Code",
+              textScaleFactor: 1.2,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => TestCode()));
             },
           ),
           ListTile(

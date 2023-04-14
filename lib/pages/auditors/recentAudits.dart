@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 import '../../widgets/drawer.dart';
 import '../../widgets/drawer.dart';
-import 'createNewAudit_1.dart';
+import 'createNewAudit.dart';
 // test commit
 
 class RecentAudits extends StatefulWidget {
@@ -80,7 +80,7 @@ class _RecentAudits extends State<RecentAudits> {
             Align(
               alignment: Alignment.topRight,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(0, 15, 280, 0),
                 child: ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pop(context);
@@ -92,45 +92,103 @@ class _RecentAudits extends State<RecentAudits> {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(20.0),
-              child: DataTable(
-                columnSpacing: 16.00,
-                // minWidth: 600,
-                // border: TableBorder.all(color: Colors.black),
-                // ignore: prefer_const_literals_to_create_immutables
-                columns: [
-                  DataColumn(
-                    label: Text("Audit Date"),
-                  ),
-                  DataColumn(
-                    label: Text("Company Name"),
-                  ),
-                  DataColumn(
-                    label: Text("Internal Auditor"),
-                  ),
-                  DataColumn(
-                    label: Text("External Auditor"),
-                  ),
-                ],
-                // rows: [
-                //   for (var item in _loadedData)
-                //     DataRow(cells: [
-                rows: List.generate(_loadedData.length, (index) {
-                  final item = _loadedData[index];
-                  return DataRow(
-                    color: index % 2 == 0
-                        ? MaterialStateProperty.resolveWith(getColor)
-                        : null,
-                    cells: [
-                      DataCell(Text(item['Audit Date'].toString())),
-                      DataCell(Text(item['Company Name'].toString())),
-                      DataCell(Text(item['Internal Auditor'].toString())),
-                      DataCell(Text(item['External Auditor'].toString())),
-                    ],
-                  );
-                }),
-                // decoration: 3.0,
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Container(
+                height: 500,
+                width: 1000,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      // blurRadius: 5,
+                      // offset: Offset(0, 2), // changes position of shadow
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.all(20.0),
+                child: DataTable(
+                  headingRowColor:
+                      MaterialStateColor.resolveWith((states) => Colors.black),
+                  columnSpacing: 16.00,
+                  // minWidth: 600,
+                  // border: TableBorder.all(color: Colors.black),
+                  // ignore: prefer_const_literals_to_create_immutables
+                  columns: [
+                    DataColumn(
+                      label: Text(
+                        "Audit Date",
+                        style: TextStyle(
+                            // fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Company Name",
+                        style: TextStyle(
+                            // fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Internal Auditor",
+                        style: TextStyle(
+                            // fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "External Auditor",
+                        style: TextStyle(
+                            // fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Status",
+                        style: TextStyle(
+                            // fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                  // rows: [
+                  //   for (var item in _loadedData)
+                  //     DataRow(cells: [
+                  rows: List.generate(_loadedData.length, (index) {
+                    final item = _loadedData[index];
+                    return DataRow(
+                      color: index % 2 != 0
+                          ? MaterialStateProperty.resolveWith(getColor)
+                          : null,
+                      cells: [
+                        DataCell(Text(item['Audit Date'].toString())),
+                        DataCell(Text(item['Company Name'].toString())),
+                        DataCell(Text(item['Internal Auditor'].toString())),
+                        DataCell(Text(item['External Auditor'].toString())),
+                        DataCell(Text(item['Status'].toString()))
+                      ],
+                    );
+                  }),
+                  // decoration: 3.0,
+                ),
               ),
             )
           ],

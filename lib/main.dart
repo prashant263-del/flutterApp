@@ -39,17 +39,16 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/",
       routes: {
+        // "/": (context) => AuditorsHomepage(), // HomePage
         "/": (context) => NewAudit(), // HomePage
-        // "/": (context) => LoginPage(), // HomePage
         // "/scrren1": (context) => const Screen1(),
         // "/home": (context) => const HomePage(),
-
-        // "/": (context) => getData(),
         // LoginPage(),
-        // MyRoutes.homeRoute: (context) => HomePage(),
-        // MyRoutes.loginRoute: (context) => Profile(),
-        // MyRoutes.loginRoute: (context) => Screen1(),
-        // MyRoutes.auditorRoute: (context) => RecentAudits()
+        MyRoutes.homeRoute: (context) => HomePage(),
+        MyRoutes.homeRoute: (context) => NewAudit(),
+        MyRoutes.loginRoute: (context) => Profile(),
+        MyRoutes.loginRoute: (context) => Screen1(),
+        MyRoutes.recentAudits: (context) => RecentAudits()
         // AuditorsHomepage(),
       },
     );

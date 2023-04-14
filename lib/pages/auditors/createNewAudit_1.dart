@@ -14,14 +14,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../utils/constants.dart';
 
-// import '../../utils/multiSelectDropdown.dart';
-// import '../../../../utils/multiselect.dart';
-// import '../../../dashboard/dashboard_screen.dart';
-// import '../../../homePage.dart';
-// import '../../components/side_menu.dart';
-
 class NewAudit extends StatefulWidget {
-  // const NewAudit({super.key});l
 
   @override
   State<NewAudit> createState() => _NewAuditState();
@@ -81,12 +74,10 @@ class _NewAuditState extends State<NewAudit> {
             '{"opnfor":"100000", "act":"A-03","companyID":"$companyID"}',
       },
     );
-    // print(jsonDecode(response.body));
     final data = json.decode("[" + response.body + "]");
     print(data[0]['body']['header']);
     setState(() {
       _loadedIndustryList = data[0]['body']['header'];
-      // _loadedIndustryList = data[0]['body']['header'];
       print('industryList $_loadedIndustryList');
     });
   }

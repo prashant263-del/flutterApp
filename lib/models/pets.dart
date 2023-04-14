@@ -1,57 +1,19 @@
-// To parse this JSON data, do
-//
-//     final pets = petsFromJson(jsonString);
+class Data {
+  String? name;
+  int? phone;
+  int? Age;
 
-import 'dart:convert';
-
-Pets petsFromJson(String str) => Pets.fromJson(json.decode(str));
-
-String petsToJson(Pets data) => json.encode(data.toJson());
-
-class Pets {
-  Pets({
-    required this.data,
-  });
-
-  final List<Datum> data;
-
-  factory Pets.fromJson(Map<String, dynamic> json) => Pets(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-      };
+  Data({required this.name, required this.phone, required this.Age});
 }
 
-class Datum {
-  Datum({
-    required this.id,
-    required this.userName,
-    required this.petName,
-    required this.petImage,
-    required this.isFriendly,
-  });
-
-  final int id;
-  final String userName;
-  final String petName;
-  final String petImage;
-  final bool isFriendly;
-
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        id: json["id"],
-        userName: json["userName"],
-        petName: json["petName"],
-        petImage: json["petImage"],
-        isFriendly: json["isFriendly"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "userName": userName,
-        "petName": petName,
-        "petImage": petImage,
-        "isFriendly": isFriendly,
-      };
-}
+List<Data> myData = [
+  Data(name: "Khaliq", phone: 09876543, Age: 28),
+  Data(name: "David", phone: 6464646, Age: 30),
+  Data(name: "Kamal", phone: 8888, Age: 32),
+  Data(name: "Ali", phone: 3333333, Age: 33),
+  Data(name: "Muzal", phone: 987654556, Age: 23),
+  Data(name: "Taimu", phone: 46464664, Age: 24),
+  Data(name: "Mehdi", phone: 5353535, Age: 36),
+  Data(name: "Rex", phone: 244242, Age: 38),
+  Data(name: "Alex", phone: 323232323, Age: 29),
+];

@@ -1,94 +1,183 @@
 import 'package:flutter/material.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+import '../../models/pets.dart';
 
-import '../../utils/multiSelectDropdown.dart';
-import '../getData.dart';
-// import 'package:flutter_demo_app/pages/homepage.dart';
+class TestCode extends StatelessWidget {
+  const TestCode({Key? key}) : super(key: key);
 
-class MyDropDowns extends StatefulWidget {
-  // final List<dynamic> items;
-  // const MyDropDowns({Key? key, required this.items}) : super(key: key);
+  // This widget is the root of your application.
   @override
-  _MyDropDownsState createState() => _MyDropDownsState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+      ),
+      home: const MyHomePage(
+          title: 'Paginated DataTable with Sorting Filtering & Pagination'),
+    );
+  }
 }
 
-class _MyDropDownsState extends State<MyDropDowns> {
-  // String? _selectedItem;
-  dynamic _selectedItem;
-  List<dynamic> _multiSelectedItems = [];
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
 
-  List<dynamic> items =
-      //  [
-      //   'Item 1',
-      //   'Item 2',
-      //   'Item 3',
-      //   'Item 4',
-      //   'Item 5',
-      // ];
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
-      [
-    {'Company ID': '1', 'Company Name': 'HDFC'},
-    {'Company ID': '2', 'Company Name': 'AXIS Bank'}
-  ];
+class _MyHomePageState extends State<MyHomePage> {
+  bool sort = true;
+  List<Data>? filterData;
 
-  final _multiSelectKey = GlobalKey<FormFieldState<List<String>>>();
-  dynamic newValue;
+  onsortColum(int columnIndex, bool ascending) {
+    if (columnIndex == 0) {
+      if (ascending) {
+        filterData!.sort((a, b) => a.name!.compareTo(b.name!));
+      } else {
+        filterData!.sort((a, b) => b.name!.compareTo(a.name!));
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    filterData = myData;
+    super.initState();
+  }
+
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Column(
-        children: [
-          DropdownButton(
-            value: _selectedItem,
-            hint: Text('Select an item'),
-            onChanged: (newValue) {
-              setState(() {
-                _selectedItem = newValue as dynamic?;
-              });
-            },
-            items: items.map((item) {
-              return DropdownMenuItem(
-                value: item,
-                child: Text(item['Company Name']),
-              );
-            }).toList(),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
-          SizedBox(height: 20),
-          MultiSelectDialogField(
-            key: _multiSelectKey,
-            title: Text('Select multiple items'),
-            buttonText: Text('Select'),
-            items: items.map((item) {
-              return MultiSelectItem<dynamic>(
-                  item['Company ID'], item['Company Name']);
-            }).toList(),
-            initialValue: _multiSelectedItems,
-            onConfirm: (values) {
-              setState(() {
-                _multiSelectedItems = values!;
-              });
-            },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                  width: double.infinity,
+                  child: Theme(
+                    data: ThemeData.light()
+                        .copyWith(cardColor: Theme.of(context).canvasColor),
+                    child: PaginatedDataTable(
+                      sortColumnIndex: 0,
+                      sortAscending: sort,
+                      header: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: TextField(
+                          controller: controller,
+                          decoration: const InputDecoration(
+                              hintText: "Enter something to filter"),
+                          onChanged: (value) {
+                            setState(() {
+                              myData = filterData!
+                                  .where((element) =>
+                                      element.name!.contains(value))
+                                  .toList();
+                            });
+                          },
+                        ),
+                      ),
+                      source: RowSource(
+                        myData: myData,
+                        count: myData.length,
+                      ),
+                      rowsPerPage: 8,
+                      columnSpacing: 8,
+                      columns: [
+                        DataColumn(
+                            label: const Text(
+                              "Name",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 14),
+                            ),
+                            onSort: (columnIndex, ascending) {
+                              setState(() {
+                                sort = !sort;
+                              });
+
+                              onsortColum(columnIndex, ascending);
+                            }),
+                        const DataColumn(
+                          label: Text(
+                            "Phone",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 14),
+                          ),
+                        ),
+                        const DataColumn(
+                          label: Text(
+                            "Age",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+              const SizedBox(height: 20),
+              const Center(
+                child: Text(
+                  "Flutter Paginated DataTable With \n\n Sorting \n\n Filtering \n\n Pagination",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 5),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              if (_multiSelectKey.currentState!.validate()) {
-                _multiSelectKey.currentState!.save();
-                print('Selected items: $_multiSelectedItems');
-              }
-            },
-            child: Text('Save'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => GetData()));
-            },
-            child: Text('Cancel'),
-          ),
-        ],
-      ),
-    );
+        ));
   }
+}
+
+class RowSource extends DataTableSource {
+  var myData;
+  final count;
+  RowSource({
+    required this.myData,
+    required this.count,
+  });
+
+  @override
+  DataRow? getRow(int index) {
+    if (index < rowCount) {
+      return recentFileDataRow(myData![index]);
+    } else
+      return null;
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => count;
+
+  @override
+  int get selectedRowCount => 0;
+}
+
+DataRow recentFileDataRow(var data) {
+  return DataRow(
+    cells: [
+      DataCell(Text(data.name ?? "Name")),
+      DataCell(Text(data.phone.toString())),
+      DataCell(Text(data.Age.toString())),
+    ],
+  );
 }
