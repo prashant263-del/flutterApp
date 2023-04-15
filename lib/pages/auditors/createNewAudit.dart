@@ -136,7 +136,7 @@ class _NewAuditState extends State<NewAudit> {
     );
     final data = await json.decode("[" + response.body + "]");
     setState(() {
-      _loadedAuditTemplatelist = data[0]['body']['header'];
+      _loadedAuditTemplatelist = data[0]['body']['lineitems'];
       print('_loadedAuditTemplatelist $_loadedAuditTemplatelist');
       if (_loadedAuditTemplatelist != null &&
           _loadedAuditTemplatelist.isNotEmpty) {
@@ -379,8 +379,8 @@ class _NewAuditState extends State<NewAudit> {
                             child: Column(
                               children: [
                                 for (int x = 0;
-                                    x < 5;
-                                    // x < _loadedAuditTemplatelist.length;
+                                    // x < 5;
+                                    x < _loadedAuditTemplatelist.length;
                                     x++) ...[
                                   Padding(
                                     padding: const EdgeInsets.all(20.0),
@@ -483,43 +483,22 @@ class _NewAuditState extends State<NewAudit> {
                                                 Text('NO'),
                                               ],
                                             ),
-                                          ] else ...[
-                                            Text(
-                                                "A is less than or Equal to 10")
+                                          ] else if ((_loadedAuditTemplatelist[
+                                                  x]['ans_type_id']) ==
+                                              '2') ...[
+                                            Row(
+                                              children: [
+                                                Text(_loadedAuditTemplatelist[x]
+                                                    ['ans_type_id'])
+                                              ],
+                                            )
                                           ]
-                                          // Expanded(
-                                          //   flex: 6, // 60%
-                                          //   child: Container(
-                                          //     child: Text(
-                                          //         _loadedAuditTemplatelist[x]
-                                          //             ['Questions']),
-                                          //   ),
-                                          // ),
-                                          // Expanded(
-                                          //   flex: 2, // 20%
-                                          //   child: Container(
-                                          //     child: Text(
-                                          //         _loadedAuditTemplatelist[x]
-                                          //             ['ans_type_id']),
-                                          //   ),
-                                          // ),
                                         ],
                                       ),
                                     ),
                                   ),
                                 ],
                               ],
-                              // child: ListView.builder(
-                              //   itemCount: _loadedAuditTemplatelist.length,
-                              //   itemBuilder:
-                              //       (BuildContext context, int index) {
-                              //     return ListTile(
-                              //       title: Text(
-                              //           _loadedAuditTemplatelist[index]
-                              //               ['Questions']),
-                              //     );
-                              //   },
-                              // ),
                             ),
                           ),
                           SizedBox(
