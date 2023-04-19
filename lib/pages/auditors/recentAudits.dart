@@ -96,7 +96,7 @@ class _RecentAudits extends State<RecentAudits> {
               padding: const EdgeInsets.only(top: 10),
               child: Container(
                 height: 500,
-                width: 1000,
+                width: 1200,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -109,11 +109,11 @@ class _RecentAudits extends State<RecentAudits> {
                     ),
                   ],
                 ),
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(10.0),
                 child: DataTable(
                   headingRowColor:
                       MaterialStateColor.resolveWith((states) => Colors.black),
-                  columnSpacing: 16.00,
+                  columnSpacing: 8.00,
                   // minWidth: 600,
                   // border: TableBorder.all(color: Colors.black),
                   // ignore: prefer_const_literals_to_create_immutables
@@ -130,7 +130,27 @@ class _RecentAudits extends State<RecentAudits> {
                     ),
                     DataColumn(
                       label: Text(
+                        "Industry",
+                        style: TextStyle(
+                            // fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
                         "Company Name",
+                        style: TextStyle(
+                            // fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "SDG",
                         style: TextStyle(
                             // fontStyle: FontStyle.italic,
                             fontSize: 20,
@@ -180,7 +200,9 @@ class _RecentAudits extends State<RecentAudits> {
                           : null,
                       cells: [
                         DataCell(Text(item['Audit Date'].toString())),
+                        DataCell(Text(item['Industry'].toString())),
                         DataCell(Text(item['Company Name'].toString())),
+                        DataCell(Text(item['SDG Name'].toString())),
                         DataCell(Text(item['Internal Auditor'].toString())),
                         DataCell(Text(item['External Auditor'].toString())),
                         DataCell(Text(item['Status'].toString()))
