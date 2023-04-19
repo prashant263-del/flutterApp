@@ -11,7 +11,7 @@ import '../../../../constants.dart';
 import '../../../../main.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
-import '../../utils/constants.dart';
+import '../../utils/constants.dart' as constants;
 
 class NewAudit extends StatefulWidget {
   // const NewAudit({super.key});l
@@ -22,7 +22,14 @@ class NewAudit extends StatefulWidget {
 
 class _NewAuditState extends State<NewAudit> {
   int _selectedIndex = -1;
+
   int _selectedValue = 1;
+
+  bool _selectedGrp1 = true;
+  String grpVal = 'grpValue';
+  String uniqGrpID = '';
+  int inc = 1;
+
   int _selectedSDG = 0;
 
   bool _isIndustry_Selected = false;
@@ -31,6 +38,19 @@ class _NewAuditState extends State<NewAudit> {
   String _imgPath = "assets/images/{}.png";
 
   var _selectedSDGName;
+  var _selectedSDGID;
+  var _selectedSDGWeightage;
+
+  var grpvalue;
+  // ignore: prefer_final_fields
+  // List<int> _selectedOptions = List.filled(3, 0);
+
+  String defaultValue = "";
+  String _slectedCompanyID = "";
+  String secondDropDown = "";
+
+  String _selectedIndustryID = "";
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +67,7 @@ class _NewAuditState extends State<NewAudit> {
   List<dynamic> _loadedIndustryList = [];
   List<dynamic> _loadedSDGList = [];
   List<dynamic> _loadedAuditTemplatelist = [];
+  List<dynamic> _selectedGrpValue = [];
 
   static const header = 'Create New Audit';
 
@@ -80,7 +101,7 @@ class _NewAuditState extends State<NewAudit> {
       Uri.parse(apiUrl),
       headers: {
         'paramsfor':
-            '{"opnfor":"100000", "act":"A-03","companyID":"$companyID"}',
+            '{"opnfor":"100000", "act":"A-03","CompanyID":"$companyID"}',
       },
     );
     final data = await json.decode("[" + response.body + "]");
@@ -90,78 +111,73 @@ class _NewAuditState extends State<NewAudit> {
 
       if (_loadedIndustryList != null && _loadedIndustryList.isNotEmpty) {
         _isCompanySelected = true;
-      } else {
-        print("Items list (_loadedIndustryList) is null or empty");
-      }
-      print('industryList $_loadedIndustryList');
+      } else {}
     });
   }
 
 // Get SDG List for the selected Industry
-  Future<void> getSDGListForIndusry(p_IndustryID) async {
+  Future<void> getSDGListForIndusry(p_IndustryID, p_slectedCompanyID) async {
     dynamic IndustryID = p_IndustryID;
-    print('Insite SDG Function');
+    dynamic CompanyID = p_slectedCompanyID;
     const apiUrl = 'http://127.0.0.1:5000';
 
     final response = await http.get(
       Uri.parse(apiUrl),
       headers: {
         'paramsfor':
-            '{"opnfor":"100000", "act":"A-04","IndustryID":"$IndustryID"}',
+            '{"opnfor":"100000", "act":"A-04","CompanyID":"$CompanyID","IndustryID":"$IndustryID"}',
       },
     );
     final data = await json.decode("[" + response.body + "]");
     setState(() {
       _loadedSDGList = data[0]['body']['header'];
-      print('_loadedSDGList $_loadedSDGList');
       if (_loadedSDGList != null && _loadedSDGList.isNotEmpty) {
         _isIndustry_Selected = true;
-        print("Items list is not null and not empty");
-      } else {
-        print("Items list is null or empty");
-      }
+      } else {}
     });
   }
 
-  Future<void> getAuditTemplate(p_sdgID) async {
-    dynamic sdgID = p_sdgID;
-    print('sdgID $sdgID');
+  Future<void> getAuditTemplate(
+      p_selectedIndustryID, p_slectedCompanyID, p_sdgID) async {
+    // dynamic sdgID = p_sdgID;
+    // print('sdgID $sdgID');
+    String UserID = constants.UserID;
     const apiUrl = 'http://127.0.0.1:5000';
 
     final response = await http.get(
       Uri.parse(apiUrl),
       headers: {
-        'paramsfor': '{"opnfor":"100000", "act":"A-06","sdgID":"$sdgID"}',
+        'paramsfor':
+            '{"opnfor":"100000", "act":"A-06","IndustryID":"$p_selectedIndustryID","CompanyID":"$p_slectedCompanyID","sdgID":"$p_sdgID", "UserID":"$UserID"}',
       },
     );
     final data = await json.decode("[" + response.body + "]");
     setState(() {
       _loadedAuditTemplatelist = data[0]['body']['lineitems'];
-      print('_loadedAuditTemplatelist $_loadedAuditTemplatelist');
       if (_loadedAuditTemplatelist != null &&
           _loadedAuditTemplatelist.isNotEmpty) {
         _isSDG_Selected = true;
-        print(_loadedAuditTemplatelist.length);
-        print("Items list is not null and not empty");
-      } else {
-        print("Items list is null or empty");
-      }
+        for (int i = 0; i < _loadedAuditTemplatelist.length; i++) {
+          _selectedGrpValue.add({"id": i, "grpValue": ""});
+        }
+      } else {}
     });
   }
 
-  String defaultValue = "";
-  String secondDropDown = "";
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
+    int selectedGrpVal;
+    int qNo = 1;
     return Scaffold(
       drawer: const MyDrawer(),
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Create New Audit"),
-        backgroundColor: appBarColor,
+        backgroundColor: Colors.blue,
+        //  appBarColor,
       ),
       body: Row(
         children: [
@@ -207,11 +223,12 @@ class _NewAuditState extends State<NewAudit> {
                             }).toList(),
                           ],
                           onChanged: (value) {
-                            print("selected Value $value");
                             getIndustryList(value);
                             setState(() {
                               defaultValue = value!;
-                              secondDropDown = '';
+                              _slectedCompanyID = defaultValue;
+                              _selectedIndustryID = '';
+                              // secondDropDown = '';
                               _selectedIndex = -1;
                             });
                           }),
@@ -222,7 +239,7 @@ class _NewAuditState extends State<NewAudit> {
                         ? SizedBox(
                             width: 250,
                             child: DropdownButton<String>(
-                                value: secondDropDown,
+                                value: _selectedIndustryID,
                                 items: [
                                   const DropdownMenuItem(
                                       child: Text(
@@ -238,21 +255,22 @@ class _NewAuditState extends State<NewAudit> {
                                   }).toList(),
                                 ],
                                 onChanged: (value) {
-                                  print("selected Value $value");
                                   // getIndustryList(value);
-                                  getSDGListForIndusry(value);
                                   setState(() {
-                                    secondDropDown = value!;
+                                    _selectedIndustryID = value!;
+                                    // secondDropDown = value!;
                                     // secondDropDown = '';
                                     _selectedIndex = -1;
                                   });
+                                  getSDGListForIndusry(
+                                      _selectedIndustryID, _slectedCompanyID);
                                 }),
                           )
                         : Container(
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                               child: Text(
-                                'Please Select Company',
+                                '',
                                 style: TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.bold),
                               ),
@@ -326,10 +344,16 @@ class _NewAuditState extends State<NewAudit> {
                                     setState(() {
                                       _selectedSDG =
                                           _loadedSDGList[index]['SDG ID'];
-                                      getAuditTemplate(_selectedSDG);
                                       _selectedIndex = index;
+                                      _selectedSDGID =
+                                          _loadedSDGList[index]['SDG ID'];
                                       _selectedSDGName =
                                           _loadedSDGList[index]['SDG Name'];
+                                      _selectedSDGWeightage =
+                                          _loadedSDGList[index]
+                                              ['weightage_slab'];
+                                      getAuditTemplate(_selectedIndustryID,
+                                          _slectedCompanyID, _selectedSDG);
                                     });
                                   },
                                 ),
@@ -366,152 +390,274 @@ class _NewAuditState extends State<NewAudit> {
                   // ? getTemplateForSDG(context)
                   ? Container(
                       child: (Column(
-                        // mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            'CSR Questions for : $_selectedSDGName',
-                            style: TextStyle(
-                              fontSize: 24,
+                          Container(
+                            width: 1150,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                // colors: [Colors.purple, Colors.pink],
+                                colors: [Colors.black, Colors.black87],
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              'SDG: $_selectedSDGID       Name: $_selectedSDGName       Weightage: $_selectedSDGWeightage',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                           ),
-                          SingleChildScrollView(
-                            // height:300,
-                            child: Column(
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: Offset(
+                                      0, 2), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            height: 550,
+                            child: ListView(
+                              shrinkWrap: true,
                               children: [
-                                for (int x = 0;
-                                    // x < 5;
-                                    x < _loadedAuditTemplatelist.length;
-                                    x++) ...[
-                                  Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    // child: Row(
-                                    //   children: [
-                                    //     Container(
-                                    //       child: Text('Que: $x'),
-                                    //     ),
-                                    //     Container(
-                                    //       decoration: BoxDecoration(
-                                    //           border: Border.all(
-                                    //               width: 1,
-                                    //               color: Colors.black)),
-                                    //       child: Text(
-                                    //           _loadedAuditTemplatelist[x]
-                                    //               ['Questions']),
-                                    //     ),
-                                    //     Container(
-                                    //       child: Text(
-                                    //           _loadedAuditTemplatelist[x]
-                                    //               ['ans_type_id']),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 0.5,
-                                        ),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1, // 20%
-                                            child: Text('Que: $x'),
-                                          ),
-                                          Expanded(
-                                            flex: 6, // 20%
-                                            child:
-                                                //  Container(
-                                                //   child: Text('Que: Question'),
-                                                // ),
-                                                Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border(
-                                                right: BorderSide(
-                                                    width: 1,
-                                                    color: Colors.black),
-                                              )),
-                                              child: Text(
-                                                  _loadedAuditTemplatelist[x]
-                                                      ['Questions']),
+                                Container(
+                                  // height: 400,
+                                  child: Column(
+                                    children: [
+                                      for (int x = 0;
+                                          // x < 5;
+                                          x < _loadedAuditTemplatelist.length;
+                                          x++) ...[
+                                        Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                                width: 0.5,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(5.0),
+                                              ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            flex: 3, // 20%
-                                            child:
-                                                // Container(
-                                                //   child: Text('Que: Question'),
-                                                // ),
-                                                Container(
-                                              child: Text(
-                                                  _loadedAuditTemplatelist[x]
-                                                      ['ans_type_id']),
-                                            ),
-                                          ),
-                                          if ((_loadedAuditTemplatelist[x]
-                                                  ['ans_type_id']) ==
-                                              '1') ...[
-                                            // ansType1(),
-                                            Row(
+                                            child: Column(
                                               children: [
-                                                Radio(
-                                                  value: 1,
-                                                  groupValue: _selectedValue,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      _selectedValue = value!;
-                                                    });
-                                                  },
+                                                Row(
+                                                  children: [
+                                                    // qNo = x+qNo,
+                                                    Column(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Container(
+                                                            child: getQno(x),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Container(
+                                                        child: Text(
+                                                            _loadedAuditTemplatelist[
+                                                                    x]
+                                                                ['Questions']),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Text('YES'),
+                                                // Expanded(
+                                                //   flex: 3, // 20%
+                                                //   child: Container(
+                                                //     child: Text(
+                                                //         _loadedAuditTemplatelist[x]
+                                                //             ['ans_type_id']),
+                                                //   ),
+                                                // ),
+
+                                                if ((_loadedAuditTemplatelist[x]
+                                                        ['ans_type_id']) ==
+                                                    '1') ...[
+                                                  // ansType1(),
+                                                  ListTile(
+                                                    title: const Text('Yes'),
+                                                    leading: Radio(
+                                                      value: '1',
+                                                      groupValue:
+                                                          _selectedGrpValue[x]
+                                                              ['grpValue'],
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          _selectedGrpValue[x]
+                                                                  ['grpValue'] =
+                                                              value.toString();
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                  ListTile(
+                                                    title: const Text('No'),
+                                                    leading: Radio(
+                                                      value: '0',
+                                                      groupValue:
+                                                          _selectedGrpValue[x]
+                                                              ['grpValue'],
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          _selectedGrpValue[x]
+                                                                  ['grpValue'] =
+                                                              value.toString();
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Container(
+                                                          // width: 300,
+                                                          child: TextField(
+                                                            decoration:
+                                                                InputDecoration(
+                                                              border:
+                                                                  OutlineInputBorder(),
+                                                              hintText:
+                                                                  'Enter comment here',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ] else if ((_loadedAuditTemplatelist[
+                                                        x]['ans_type_id']) ==
+                                                    '2') ...[
+                                                  for (int y = 0;
+                                                      y <
+                                                          (_loadedAuditTemplatelist[
+                                                                  x]['Answer']
+                                                              .length);
+                                                      y++) ...[
+                                                    Column(
+                                                      children: [
+                                                        ListTile(
+                                                          title: Text(
+                                                              _loadedAuditTemplatelist[
+                                                                          x]
+                                                                      ['Answer']
+                                                                  [
+                                                                  y]['Option']),
+                                                          leading: Radio(
+                                                            value: y.toString(),
+                                                            groupValue:
+                                                                _selectedGrpValue[
+                                                                        x][
+                                                                    'grpValue'],
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                _selectedGrpValue[
+                                                                            x][
+                                                                        'grpValue'] =
+                                                                    value
+                                                                        .toString();
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      // width: 300,
+                                                      child: TextField(
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          hintText:
+                                                              'Enter comment here',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ]
+                                                //else if ((_loadedAuditTemplatelist[
+                                                //         x]['ans_type_id']) ==
+                                                //     '3') ...[
+                                                //   // ansType1(),
+                                                //   Radio(
+                                                //     value: '0',
+                                                //     groupValue:
+                                                //         _selectedGrpValue[x]
+                                                //             ['grpValue'],
+                                                //     onChanged: (value) {
+                                                //       setState(() {
+                                                //         _selectedGrpValue[x]
+                                                //                 ['grpValue'] =
+                                                //             value.toString();
+                                                //       });
+                                                //     },
+                                                //   ),
+                                                //   Text('YES'),
+                                                //   Radio(
+                                                //     value: '1',
+                                                //     groupValue:
+                                                //         _selectedGrpValue[x]
+                                                //             ['grpValue'],
+                                                //     onChanged: (value) {
+                                                //       setState(() {
+                                                //         _selectedGrpValue[x]
+                                                //                 ['grpValue'] =
+                                                //             value.toString();
+                                                //       });
+                                                //     },
+                                                //   ),
+                                                //   Text('NO'),
+                                                // ]
                                               ],
                                             ),
-                                            Row(
-                                              children: [
-                                                Radio(
-                                                  value: 2,
-                                                  groupValue: _selectedValue,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      _selectedValue = value!;
-                                                    });
-                                                  },
-                                                ),
-                                                Text('NO'),
-                                              ],
-                                            ),
-                                          ] else if ((_loadedAuditTemplatelist[
-                                                  x]['ans_type_id']) ==
-                                              '2') ...[
-                                            Row(
-                                              children: [
-                                                Text(_loadedAuditTemplatelist[x]
-                                                    ['ans_type_id'])
-                                              ],
-                                            )
-                                          ]
-                                        ],
-                                      ),
-                                    ),
+                                          ),
+                                        ),
+                                      ],
+                                    ],
                                   ),
-                                ],
+                                ),
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 190,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(80, 0, 20, 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: ElevatedButton(
+                          // SizedBox(
+                          //   height: 210,
+                          // ),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                              top: BorderSide(width: 1, color: Colors.black),
+                            )),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(80, 5, 20, 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.redAccent),
                                     onPressed: () {
@@ -523,20 +669,20 @@ class _NewAuditState extends State<NewAudit> {
                                     },
                                     child: const Text("Cancel"),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20.0),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.greenAccent),
-                                    onPressed: () {},
-                                    child: const Text("Submit"),
+                                  SizedBox(
+                                    width: 10,
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 2.0),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green),
+                                      onPressed: () {},
+                                      child: const Text("Submit"),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -592,6 +738,11 @@ class _NewAuditState extends State<NewAudit> {
     );
   }
 
+  getQno(int x) {
+    x = x + 1;
+    return Text('Que: $x');
+  }
+
   // Column getTemplateForSDG(BuildContext context) {
   //   return Column(
   //     mainAxisAlignment: MainAxisAlignment.start,
@@ -631,4 +782,9 @@ class _NewAuditState extends State<NewAudit> {
   //     ],
   //   );
   // }
+}
+
+addGrpVal(int x) {
+  int grpValue = x;
+  return grpValue;
 }
