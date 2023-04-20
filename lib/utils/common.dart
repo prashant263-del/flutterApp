@@ -1,36 +1,26 @@
-import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io';
+import 'dart:convert';
+import 'constants.dart';
 
-class common extends StatefulWidget {
-  const common({super.key});
+class commonFunctions {
+  Future<dynamic> callAPI(params) async {
+    print('Params:');
+    print(params);
+    var payload = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'paramsFor': params.toString()
+    };
 
-  @override
-  State<common> createState() => _commonState();
-}
+    final response = await http.get(Uri.parse(API_URL), headers: payload);
 
-class _commonState extends State<common> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
+    // final int statusCode = response.statusCode;
 
-  
-  Future<void> _fetchData() async {
-    const apiUrl = 'http://127.0.0.1:5000';
-
-    final response = await http.get(
-      Uri.parse(apiUrl),
-      headers: {
-        'paramsfor': '{"opnfor":"100000", "act":"A-02"}',
-      },
-    );
-
+    // if (statusCode < 200 || statusCode >= 400 || json == null) {
+    //   throw new ApiException(jsonDecode(response.body)["message"]);
+    // }
     final data = json.decode("[" + response.body + "]");
 
-    setState(() {
-      // _loadedData = data[0]['body']['header'];
-    });
+    return data[0]['body'];
   }
 }

@@ -10,6 +10,7 @@ import 'dart:io';
 import '../../../../constants.dart';
 import '../../../../main.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:flutter_demo_app/utils/common.dart';
 
 import '../../utils/constants.dart' as constants;
 
@@ -21,10 +22,11 @@ class NewAudit extends StatefulWidget {
 }
 
 class _NewAuditState extends State<NewAudit> {
+  String payload = "";
+  commonFunctions cFun = new commonFunctions();
+
   int _selectedIndex = -1;
-
   int _selectedValue = 1;
-
   bool _selectedGrp1 = true;
   String grpVal = 'grpValue';
   String uniqGrpID = '';
@@ -68,6 +70,8 @@ class _NewAuditState extends State<NewAudit> {
   List<dynamic> _loadedSDGList = [];
   List<dynamic> _loadedAuditTemplatelist = [];
   List<dynamic> _selectedGrpValue = [];
+
+  dynamic _selectedAuditID;
 
   static const header = 'Create New Audit';
 
@@ -154,11 +158,15 @@ class _NewAuditState extends State<NewAudit> {
     final data = await json.decode("[" + response.body + "]");
     setState(() {
       _loadedAuditTemplatelist = data[0]['body']['lineitems'];
+      _selectedAuditID = data[0]['body']['header'];
       if (_loadedAuditTemplatelist != null &&
           _loadedAuditTemplatelist.isNotEmpty) {
         _isSDG_Selected = true;
         for (int i = 0; i < _loadedAuditTemplatelist.length; i++) {
-          _selectedGrpValue.add({"id": i, "grpValue": ""});
+          _selectedGrpValue.add({
+            "id": _loadedAuditTemplatelist[i]["AuditTemplateID"],
+            "grpValue": ""
+          });
         }
       } else {}
     });
@@ -495,14 +503,52 @@ class _NewAuditState extends State<NewAudit> {
                                                     title: const Text('Yes'),
                                                     leading: Radio(
                                                       value: '1',
-                                                      groupValue:
-                                                          _selectedGrpValue[x]
-                                                              ['grpValue'],
+                                                      groupValue: _loadedAuditTemplatelist[
+                                                                      x][
+                                                                  'SelectedAns'] ==
+                                                              '-'
+                                                          ? _selectedGrpValue[x]
+                                                              ['grpValue']
+                                                          : _selectedGrpValue[x]
+                                                                  ['grpValue'] =
+                                                              _loadedAuditTemplatelist[
+                                                                      x][
+                                                                  'SelectedAns'],
+                                                      // groupValue:
+                                                      //     _selectedGrpValue[x]
+                                                      //         ['grpValue'],
                                                       onChanged: (value) {
                                                         setState(() {
                                                           _selectedGrpValue[x]
                                                                   ['grpValue'] =
                                                               value.toString();
+                                                        });
+                                                        payload =
+                                                            // '{"opnfor":"100000", "act":"A-7", "" }';
+                                                            '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
+                                                                _selectedAuditID[
+                                                                        0][
+                                                                    'AuditID'] +
+                                                                '","QueNo":"' +
+                                                                _selectedGrpValue[
+                                                                        x]['id']
+                                                                    .toString() +
+                                                                '", "AnsSelected":"' +
+                                                                _selectedGrpValue[
+                                                                            x][
+                                                                        'grpValue']
+                                                                    .toString() +
+                                                                '"}';
+                                                        cFun
+                                                            .callAPI(payload)
+                                                            .then((data) {
+                                                          setState(() {
+                                                            // _loadedData =
+                                                            //     data[
+                                                            //         'header'];
+                                                            print(
+                                                                'call success');
+                                                          });
                                                         });
                                                       },
                                                     ),
@@ -511,14 +557,52 @@ class _NewAuditState extends State<NewAudit> {
                                                     title: const Text('No'),
                                                     leading: Radio(
                                                       value: '0',
-                                                      groupValue:
-                                                          _selectedGrpValue[x]
-                                                              ['grpValue'],
+                                                      groupValue: _loadedAuditTemplatelist[
+                                                                      x][
+                                                                  'SelectedAns'] ==
+                                                              '-'
+                                                          ? _selectedGrpValue[x]
+                                                              ['grpValue']
+                                                          : _selectedGrpValue[x]
+                                                                  ['grpValue'] =
+                                                              _loadedAuditTemplatelist[
+                                                                      x][
+                                                                  'SelectedAns'],
+                                                      // _selectedGrpValue[x]
+                                                      //     ['grpValue'],
                                                       onChanged: (value) {
                                                         setState(() {
                                                           _selectedGrpValue[x]
                                                                   ['grpValue'] =
                                                               value.toString();
+                                                        });
+
+                                                        payload =
+                                                            // '{"opnfor":"100000", "act":"A-7", "" }';
+                                                            '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
+                                                                _selectedAuditID[
+                                                                        0][
+                                                                    'AuditID'] +
+                                                                '","QueNo":"' +
+                                                                _selectedGrpValue[
+                                                                        x]['id']
+                                                                    .toString() +
+                                                                '", "AnsSelected":"' +
+                                                                _selectedGrpValue[
+                                                                            x][
+                                                                        'grpValue']
+                                                                    .toString() +
+                                                                '"}';
+                                                        cFun
+                                                            .callAPI(payload)
+                                                            .then((data) {
+                                                          setState(() {
+                                                            // _loadedData =
+                                                            //     data[
+                                                            //         'header'];
+                                                            print(
+                                                                'call success');
+                                                          });
                                                         });
                                                       },
                                                     ),
@@ -563,11 +647,31 @@ class _NewAuditState extends State<NewAudit> {
                                                                   [
                                                                   y]['Option']),
                                                           leading: Radio(
-                                                            value: y.toString(),
-                                                            groupValue:
-                                                                _selectedGrpValue[
-                                                                        x][
-                                                                    'grpValue'],
+                                                            // value: y.toString(),
+
+                                                            value:
+                                                                _loadedAuditTemplatelist[
+                                                                            x][
+                                                                        'Answer']
+                                                                    [
+                                                                    y]['ansID'],
+                                                            groupValue: _loadedAuditTemplatelist[
+                                                                            x][
+                                                                        'SelectedAns'] ==
+                                                                    '-'
+                                                                ? _selectedGrpValue[
+                                                                        x]
+                                                                    ['grpValue']
+                                                                : _selectedGrpValue[
+                                                                            x][
+                                                                        'grpValue'] =
+                                                                    _loadedAuditTemplatelist[
+                                                                            x][
+                                                                        'SelectedAns'],
+
+                                                            // _selectedGrpValue[
+                                                            //         x][
+                                                            //     'grpValue'],
                                                             onChanged: (value) {
                                                               setState(() {
                                                                 _selectedGrpValue[
@@ -575,6 +679,36 @@ class _NewAuditState extends State<NewAudit> {
                                                                         'grpValue'] =
                                                                     value
                                                                         .toString();
+                                                              });
+                                                              payload =
+                                                                  // '{"opnfor":"100000", "act":"A-7", "" }';
+                                                                  '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
+                                                                      _selectedAuditID[
+                                                                              0]
+                                                                          [
+                                                                          'AuditID'] +
+                                                                      '","QueNo":"' +
+                                                                      _selectedGrpValue[x]
+                                                                              [
+                                                                              'id']
+                                                                          .toString() +
+                                                                      '", "AnsSelected":"' +
+                                                                      _selectedGrpValue[x]
+                                                                              [
+                                                                              'grpValue']
+                                                                          .toString() +
+                                                                      '"}';
+                                                              cFun
+                                                                  .callAPI(
+                                                                      payload)
+                                                                  .then((data) {
+                                                                setState(() {
+                                                                  // _loadedData =
+                                                                  //     data[
+                                                                  //         'header'];
+                                                                  print(
+                                                                      'call success');
+                                                                });
                                                               });
                                                             },
                                                           ),
