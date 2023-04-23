@@ -136,6 +136,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.3"
+  grouped_buttons:
+    dependency: "direct main"
+    description:
+      name: grouped_buttons
+      sha256: "0b8e19b120dc19beefc681e4e6037711f73075a2fafcf54b3c4c5144cb0d7252"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   http:
     dependency: "direct main"
     description:

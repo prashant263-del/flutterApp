@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       // darkTheme: ThemeData(
       //   brightness: Brightness.dark,
       // ),
+      title: 'SEBI CSR Audit Application',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
