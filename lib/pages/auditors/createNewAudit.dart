@@ -160,7 +160,7 @@ class _NewAuditState extends State<NewAudit> {
     final data = await json.decode("[" + response.body + "]");
     setState(() {
       _selectedGrpValue = [];
-      _checkedItem = [];
+      // _checkedItem = [];
       _loadedAuditTemplatelist = data[0]['body']['lineitems'];
       _selectedAuditID = data[0]['body']['header'];
       if (_loadedAuditTemplatelist != null &&
@@ -417,17 +417,31 @@ class _NewAuditState extends State<NewAudit> {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 // colors: [Colors.purple, Colors.pink],
-                                colors: [Colors.black, Colors.black87],
+                                colors: [Colors.blue, Colors.purple],
                               ),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
-                              'SDG: $_selectedSDGID       Name: $_selectedSDGName       Weightage: $_selectedSDGWeightage',
-                              textAlign: TextAlign.center,
+                              '         SDG: $_selectedSDGID                                       $_selectedSDGName                                        Weightage: $_selectedSDGWeightage',
+                              textAlign: TextAlign.start,
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
+                            ),
+                          ),
+                          Container(
+                            width: 1150,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                // colors: [Colors.purple, Colors.pink],
+                                colors: [Colors.blue, Colors.white],
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              '             Que                                                                                                                  Internal Audit                                                                                 External Audit',
+                              textAlign: TextAlign.start,
                             ),
                           ),
                           Container(
@@ -471,420 +485,595 @@ class _NewAuditState extends State<NewAudit> {
                                             child: Column(
                                               children: [
                                                 Row(
-                                                  children: [
-                                                    // qNo = x+qNo,
-                                                    Column(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Container(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Column(
+                                                        children: [
+                                                          Container(
+                                                            width: 50,
                                                             child: getQno(x),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Container(
+                                                        ],
+                                                      ),
+                                                      Container(
+                                                        width: 310,
                                                         child: Text(
                                                             _loadedAuditTemplatelist[
                                                                     x]
                                                                 ['Questions']),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                if ((_loadedAuditTemplatelist[x]
-                                                        ['ans_type_id']) ==
-                                                    '1') ...[
-                                                  // ansType1(),
-                                                  ListTile(
-                                                    title: const Text('Yes'),
-                                                    leading: Radio(
-                                                      value: '1',
-                                                      groupValue: _loadedAuditTemplatelist[
-                                                                      x][
-                                                                  'SelectedAns'] ==
-                                                              '-'
-                                                          ? _selectedGrpValue[x]
-                                                              ['grpValue']
-                                                          : _selectedGrpValue[x]
-                                                                  ['grpValue'] =
-                                                              _loadedAuditTemplatelist[
-                                                                      x][
-                                                                  'SelectedAns'],
-                                                      // groupValue:
-                                                      //     _selectedGrpValue[x]
-                                                      //         ['grpValue'],
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          _selectedGrpValue[x]
-                                                                  ['grpValue'] =
-                                                              value.toString();
-                                                        });
-                                                        payload =
-                                                            // '{"opnfor":"100000", "act":"A-7", "" }';
-                                                            '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
-                                                                _selectedAuditID[
-                                                                        0][
-                                                                    'AuditID'] +
-                                                                '","QueNo":"' +
-                                                                _selectedGrpValue[
-                                                                        x]['id']
-                                                                    .toString() +
-                                                                '", "AnsSelected":"' +
-                                                                _selectedGrpValue[
-                                                                            x][
-                                                                        'grpValue']
-                                                                    .toString() +
-                                                                '", "AnsType":"1"}';
-                                                        cFun
-                                                            .callAPI(payload)
-                                                            .then((data) {
-                                                          setState(() {
-                                                            getAuditTemplate(
-                                                                _selectedIndustryID,
-                                                                _slectedCompanyID,
-                                                                _selectedSDG);
-                                                            // _loadedData =
-                                                            //     data[
-                                                            //         'header'];
-                                                            print(
-                                                                'call success');
-                                                          });
-                                                        });
-                                                      },
-                                                    ),
-                                                  ),
-                                                  ListTile(
-                                                    title: const Text('No'),
-                                                    leading: Radio(
-                                                      value: '0',
-                                                      groupValue: _loadedAuditTemplatelist[
-                                                                      x][
-                                                                  'SelectedAns'] ==
-                                                              '-'
-                                                          ? _selectedGrpValue[x]
-                                                              ['grpValue']
-                                                          : _selectedGrpValue[x]
-                                                                  ['grpValue'] =
-                                                              _loadedAuditTemplatelist[
-                                                                      x][
-                                                                  'SelectedAns'],
-                                                      // _selectedGrpValue[x]
-                                                      //     ['grpValue'],
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          _selectedGrpValue[x]
-                                                                  ['grpValue'] =
-                                                              value.toString();
-                                                        });
-
-                                                        payload =
-                                                            // '{"opnfor":"100000", "act":"A-7", "" }';
-                                                            '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
-                                                                _selectedAuditID[
-                                                                        0][
-                                                                    'AuditID'] +
-                                                                '","QueNo":"' +
-                                                                _selectedGrpValue[
-                                                                        x]['id']
-                                                                    .toString() +
-                                                                '", "AnsSelected":"' +
-                                                                _selectedGrpValue[
-                                                                            x][
-                                                                        'grpValue']
-                                                                    .toString() +
-                                                                '", "AnsType":"1"}';
-                                                        cFun
-                                                            .callAPI(payload)
-                                                            .then((data) {
-                                                          setState(() {
-                                                            getAuditTemplate(
-                                                                _selectedIndustryID,
-                                                                _slectedCompanyID,
-                                                                _selectedSDG);
-                                                            // _loadedData =
-                                                            //     data[
-                                                            //         'header'];
-                                                            print(
-                                                                'call success');
-                                                          });
-                                                        });
-                                                      },
-                                                    ),
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Container(
-                                                          // width: 300,
-                                                          child: TextField(
-                                                            decoration:
-                                                                InputDecoration(
-                                                              border:
-                                                                  OutlineInputBorder(),
-                                                              hintText:
-                                                                  'Enter comment here',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ] else if ((_loadedAuditTemplatelist[
-                                                        x]['ans_type_id']) ==
-                                                    '2') ...[
-                                                  for (int y = 0;
-                                                      y <
-                                                          (_loadedAuditTemplatelist[
-                                                                  x]['Answer']
-                                                              .length);
-                                                      y++) ...[
-                                                    Column(
-                                                      children: [
-                                                        ListTile(
-                                                          title: Text(
-                                                              _loadedAuditTemplatelist[
-                                                                          x]
-                                                                      ['Answer']
-                                                                  [
-                                                                  y]['Option']),
-                                                          leading: Radio(
-                                                            // value: y.toString(),
-
-                                                            value:
-                                                                _loadedAuditTemplatelist[
-                                                                            x][
-                                                                        'Answer']
-                                                                    [
-                                                                    y]['ansID'],
-                                                            groupValue: _loadedAuditTemplatelist[
-                                                                            x][
-                                                                        'SelectedAns'] ==
-                                                                    '-'
-                                                                ? _selectedGrpValue[
-                                                                        x]
-                                                                    ['grpValue']
-                                                                : _selectedGrpValue[
-                                                                            x][
-                                                                        'grpValue'] =
-                                                                    _loadedAuditTemplatelist[
-                                                                            x][
-                                                                        'SelectedAns'],
-
-                                                            // _selectedGrpValue[
-                                                            //         x][
-                                                            //     'grpValue'],
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                _selectedGrpValue[
-                                                                            x][
-                                                                        'grpValue'] =
-                                                                    value
-                                                                        .toString();
-                                                              });
-                                                              payload =
-                                                                  // '{"opnfor":"100000", "act":"A-7", "" }';
-                                                                  '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
-                                                                      _selectedAuditID[
-                                                                              0]
-                                                                          [
-                                                                          'AuditID'] +
-                                                                      '","QueNo":"' +
-                                                                      _selectedGrpValue[x]
+                                                      //   ],
+                                                      // ),
+                                                      if ((_loadedAuditTemplatelist[
+                                                                  x][
+                                                              'ans_type_id']) ==
+                                                          '1') ...[
+                                                        // ansType1(),
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                              border: Border(
+                                                                  left: BorderSide(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      width:
+                                                                          2))),
+                                                          width: 300,
+                                                          child: Column(
+                                                            children: [
+                                                              ListTile(
+                                                                title:
+                                                                    const Text(
+                                                                        'Yes'),
+                                                                leading: Radio(
+                                                                  value: '1',
+                                                                  groupValue: _loadedAuditTemplatelist[x]
                                                                               [
-                                                                              'id']
-                                                                          .toString() +
-                                                                      '", "AnsSelected":"' +
-                                                                      _selectedGrpValue[x]
-                                                                              [
-                                                                              'grpValue']
-                                                                          .toString() +
-                                                                      '", "AnsType":"2"}';
-                                                              cFun
-                                                                  .callAPI(
-                                                                      payload)
-                                                                  .then((data) {
-                                                                setState(() {
-                                                                  getAuditTemplate(
-                                                                      _selectedIndustryID,
-                                                                      _slectedCompanyID,
-                                                                      _selectedSDG);
-                                                                });
-                                                              });
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      // width: 300,
-                                                      child: TextField(
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          hintText:
-                                                              'Enter comment here',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                ] else if ((_loadedAuditTemplatelist[
-                                                        x]['ans_type_id']) ==
-                                                    '3') ...[
-                                                  // ansType1(),
-                                                  Container(
-                                                    height: 200,
-                                                    // width: 200,
-                                                    child: ListView.builder(
-                                                      itemCount:
-                                                          _loadedAuditTemplatelist[
-                                                                  x]['Answer']
-                                                              .length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        // dynamic _checkedItem;
-                                                        return CheckboxListTile(
-                                                          title: Text(
-                                                              _loadedAuditTemplatelist[
+                                                                              'SelectedAns'] ==
+                                                                          '-'
+                                                                      ? _selectedGrpValue[
                                                                               x]
                                                                           [
-                                                                          'Answer']
-                                                                      [index]
-                                                                  ['Option']),
-                                                          value:
-                                                              // if ((_loadedAuditTemplatelist[ x] [ 'Answer'] [index][ 'ansID']) in (_checkedItem[x] [ 'checkedValues'])){true},
-                                                              // _checkedItem[x][
-                                                              //         'checkedValues']
-                                                              //     .contains(_loadedAuditTemplatelist[x]
-                                                              //                 [
-                                                              //                 'Answer']
-                                                              //             [
-                                                              //             index]
-                                                              //         [
-                                                              //         'ansID']), // _selectedOption:20, value: true
-                                                              _loadedAuditTemplatelist[
+                                                                          'grpValue']
+                                                                      : _selectedGrpValue[
                                                                               x]
                                                                           [
-                                                                          'SelectedAns'] ==
-                                                                      '-'
-                                                                  ? _checkedItem[
-                                                                              x]
-                                                                          [
-                                                                          'checkedValues']
-                                                                      .contains(
-                                                                          _loadedAuditTemplatelist[x]['Answer'][index]
-                                                                              [
-                                                                              'ansID'])
-                                                                  : checkForCheckedValues(
-                                                                      _loadedAuditTemplatelist[
+                                                                          'grpValue'] = _loadedAuditTemplatelist[
                                                                               x]
                                                                           [
                                                                           'SelectedAns'],
-                                                                      _loadedAuditTemplatelist[x]['Answer']
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    setState(
+                                                                        () {
+                                                                      _selectedGrpValue[x]
+                                                                              [
+                                                                              'grpValue'] =
+                                                                          value
+                                                                              .toString();
+                                                                    });
+                                                                    payload =
+                                                                        // '{"opnfor":"100000", "act":"A-7", "" }';
+                                                                        '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
+                                                                            _selectedAuditID[0]['AuditID'] +
+                                                                            '","QueNo":"' +
+                                                                            _selectedGrpValue[x]['id'].toString() +
+                                                                            '", "AnsSelected":"' +
+                                                                            _selectedGrpValue[x]['grpValue'].toString() +
+                                                                            '", "AnsType":"1"}';
+                                                                    cFun
+                                                                        .callAPI(
+                                                                            payload)
+                                                                        .then(
+                                                                            (data) {
+                                                                      setState(
+                                                                          () {
+                                                                        getAuditTemplate(
+                                                                            _selectedIndustryID,
+                                                                            _slectedCompanyID,
+                                                                            _selectedSDG);
+                                                                        // _loadedData =
+                                                                        //     data[
+                                                                        //         'header'];
+                                                                        print(
+                                                                            'call success');
+                                                                      });
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                              ListTile(
+                                                                title:
+                                                                    const Text(
+                                                                        'No'),
+                                                                leading: Radio(
+                                                                  value: '0',
+                                                                  groupValue: _loadedAuditTemplatelist[x]
+                                                                              [
+                                                                              'SelectedAns'] ==
+                                                                          '-'
+                                                                      ? _selectedGrpValue[
+                                                                              x]
+                                                                          [
+                                                                          'grpValue']
+                                                                      : _selectedGrpValue[
+                                                                              x]
+                                                                          [
+                                                                          'grpValue'] = _loadedAuditTemplatelist[
+                                                                              x]
+                                                                          [
+                                                                          'SelectedAns'],
+                                                                  // _selectedGrpValue[x]
+                                                                  //     ['grpValue'],
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    setState(
+                                                                        () {
+                                                                      _selectedGrpValue[x]
+                                                                              [
+                                                                              'grpValue'] =
+                                                                          value
+                                                                              .toString();
+                                                                    });
+
+                                                                    payload =
+                                                                        // '{"opnfor":"100000", "act":"A-7", "" }';
+                                                                        '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
+                                                                            _selectedAuditID[0]['AuditID'] +
+                                                                            '","QueNo":"' +
+                                                                            _selectedGrpValue[x]['id'].toString() +
+                                                                            '", "AnsSelected":"' +
+                                                                            _selectedGrpValue[x]['grpValue'].toString() +
+                                                                            '", "AnsType":"1"}';
+                                                                    cFun
+                                                                        .callAPI(
+                                                                            payload)
+                                                                        .then(
+                                                                            (data) {
+                                                                      setState(
+                                                                          () {
+                                                                        getAuditTemplate(
+                                                                            _selectedIndustryID,
+                                                                            _slectedCompanyID,
+                                                                            _selectedSDG);
+                                                                        // _loadedData =
+                                                                        //     data[
+                                                                        //         'header'];
+                                                                        print(
+                                                                            'call success');
+                                                                      });
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child:
+                                                                    Container(
+                                                                  width: 300,
+                                                                  child:
+                                                                      TextField(
+                                                                    decoration:
+                                                                        InputDecoration(
+                                                                      border:
+                                                                          OutlineInputBorder(),
+                                                                      hintText:
+                                                                          'Enter comment here',
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ]
+                                                      // answer type 2
+                                                      else if ((_loadedAuditTemplatelist[
+                                                                  x][
+                                                              'ans_type_id']) ==
+                                                          '2') ...[
+                                                        // for (int y = 0;
+                                                        //     y <
+                                                        //         (_loadedAuditTemplatelist[
+                                                        //                     x][
+                                                        //                 'Answer']
+                                                        //             .length);
+                                                        //     y++) ...[
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                              border: Border(
+                                                                  left: BorderSide(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      width:
+                                                                          2))),
+                                                          child: Column(
+                                                            children: [
+                                                              for (int y = 0;
+                                                                  y <
+                                                                      (_loadedAuditTemplatelist[x]
+                                                                              [
+                                                                              'Answer']
+                                                                          .length);
+                                                                  y++) ...[
+                                                                Container(
+                                                                  width: 300,
+                                                                  child:
+                                                                      ListTile(
+                                                                    title: Text(_loadedAuditTemplatelist[x]
+                                                                            [
+                                                                            'Answer'][y]
+                                                                        [
+                                                                        'Option']),
+                                                                    leading:
+                                                                        Radio(
+                                                                      value: _loadedAuditTemplatelist[x]['Answer']
+                                                                              [
+                                                                              y]
+                                                                          [
+                                                                          'ansID'],
+                                                                      groupValue: _loadedAuditTemplatelist[x]['SelectedAns'] ==
+                                                                              '-'
+                                                                          ? _selectedGrpValue[x]
+                                                                              [
+                                                                              'grpValue']
+                                                                          : _selectedGrpValue[x]
+                                                                              [
+                                                                              'grpValue'] = _loadedAuditTemplatelist[
+                                                                                  x]
+                                                                              [
+                                                                              'SelectedAns'],
+                                                                      onChanged:
+                                                                          (value) {
+                                                                        setState(
+                                                                            () {
+                                                                          _selectedGrpValue[x]['grpValue'] =
+                                                                              value.toString();
+                                                                        });
+                                                                        //payload
+                                                                        // cfun
+                                                                        payload =
+                                                                            // '{"opnfor":"100000", "act":"A-7", "" }';
+                                                                            '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
+                                                                                _selectedAuditID[0]['AuditID'] +
+                                                                                '","QueNo":"' +
+                                                                                _selectedGrpValue[x]['id'].toString() +
+                                                                                '", "AnsSelected":"' +
+                                                                                _selectedGrpValue[x]['grpValue'].toString() +
+                                                                                '", "AnsType":"2"}';
+                                                                        cFun
+                                                                            .callAPI(payload)
+                                                                            .then((data) {
+                                                                          setState(
+                                                                              () {
+                                                                            getAuditTemplate(
+                                                                                _selectedIndustryID,
+                                                                                _slectedCompanyID,
+                                                                                _selectedSDG);
+                                                                          });
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child:
+                                                                    Container(
+                                                                  width: 300,
+                                                                  child:
+                                                                      TextField(
+                                                                    decoration:
+                                                                        InputDecoration(
+                                                                      border:
+                                                                          OutlineInputBorder(),
+                                                                      hintText:
+                                                                          'Enter comment here',
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ], // children
+                                                          ),
+                                                        ),
+                                                        // ] // for loop of y
+                                                        //end of ans type 2
+                                                      ] else if ((_loadedAuditTemplatelist[
+                                                                      x][
+                                                                  'ans_type_id']) ==
+                                                              '3' &&
+                                                          (_loadedAuditTemplatelist[
+                                                                      x][
+                                                                  'InternalExternal']) ==
+                                                              '-') ...[
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                              border: Border(
+                                                                  left: BorderSide(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      width:
+                                                                          2))),
+                                                          child: Column(
+                                                            children: [
+                                                              Container(
+                                                                height: 200,
+                                                                width: 300,
+                                                                child: ListView
+                                                                    .builder(
+                                                                  itemCount: _loadedAuditTemplatelist[
+                                                                              x]
+                                                                          [
+                                                                          'Answer']
+                                                                      .length,
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          index) {
+                                                                    // dynamic _checkedItem;
+                                                                    return CheckboxListTile(
+                                                                      title: Text(_loadedAuditTemplatelist[x]['Answer']
                                                                               [
                                                                               index]
                                                                           [
-                                                                          'ansID'],
-                                                                    ), // _selectedOption:20, value: true
-                                                          onChanged: (value) {
-                                                            print(
-                                                                'value:: $value');
-                                                            setState(() {
-                                                              // if already present then remove otherwise add checked options
-                                                              if (value!) {
-                                                                print(
-                                                                    'insert value');
-                                                                _checkedItem[x][
-                                                                        'checkedValues']
-                                                                    .add(_loadedAuditTemplatelist[x]['Answer'][index]
-                                                                            [
-                                                                            'ansID']
-                                                                        .toString());
-                                                              } else {
-                                                                print(
-                                                                    'remove value');
-                                                                _checkedItem[x][
-                                                                        'checkedValues']
-                                                                    .remove(_loadedAuditTemplatelist[x]['Answer'][index]
-                                                                            [
-                                                                            'ansID']
-                                                                        .toString());
-                                                              }
-                                                              // if (_checkedItem[
-                                                              //             x]
-                                                              //         [
-                                                              //         'checkedValues']
-                                                              //     .contains(_loadedAuditTemplatelist[x]
-                                                              //                 [
-                                                              //                 'Answer']
-                                                              //             [
-                                                              //             index]
-                                                              //         [
-                                                              //         'ansID'])) {
-                                                              //   _checkedItem[x][
-                                                              //           'checkedValues']
-                                                              //       .remove(_loadedAuditTemplatelist[x]['Answer'][index]
-                                                              //               [
-                                                              //               'ansID']
-                                                              //           .toString());
-                                                              // } else {
-                                                              //   _checkedItem[x][
-                                                              //           'checkedValues']
-                                                              //       .add(_loadedAuditTemplatelist[x]['Answer'][index]
-                                                              //               [
-                                                              //               'ansID']
-                                                              //           .toString());
-                                                              // }
-                                                            });
+                                                                          'Option']),
+                                                                      value:
+                                                                          // if ((_loadedAuditTemplatelist[ x] [ 'Answer'] [index][ 'ansID']) in (_checkedItem[x] [ 'checkedValues'])){true},
+                                                                          _checkedItem[x]['checkedValues'].contains(_loadedAuditTemplatelist[x]['Answer'][index]
+                                                                              [
+                                                                              'ansID']), // _selectedOption:20, value: true
+                                                                      // _loadedAuditTemplatelist[
+                                                                      //                 x]
+                                                                      //             [
+                                                                      //             'SelectedAns'] ==
+                                                                      //         '-'
+                                                                      //     ? _checkedItem[
+                                                                      //                 x]
+                                                                      //             [
+                                                                      //             'checkedValues']
+                                                                      //         .contains(
+                                                                      //             _loadedAuditTemplatelist[x]['Answer'][index]
+                                                                      //                 [
+                                                                      //                 'ansID'])
+                                                                      //     : checkForCheckedValues(
+                                                                      //         _loadedAuditTemplatelist[
+                                                                      //                 x]
+                                                                      //             [
+                                                                      //             'SelectedAns'],
+                                                                      //         _loadedAuditTemplatelist[x]['Answer']
+                                                                      //                 [
+                                                                      //                 index]
+                                                                      //             [
+                                                                      //             'ansID'],
+                                                                      //       ), // _selectedOption:20, value: true
+                                                                      onChanged:
+                                                                          (value) {
+                                                                        setState(
+                                                                            () {
+                                                                          // if already present then remove otherwise add checked options
+                                                                          // if (value!) {
+                                                                          //   print(
+                                                                          //       'insert value');
+                                                                          //   _checkedItem[x][
+                                                                          //           'checkedValues']
+                                                                          //       .add(_loadedAuditTemplatelist[x]['Answer'][index]
+                                                                          //               [
+                                                                          //               'ansID']
+                                                                          //           .toString());
+                                                                          // } else {
+                                                                          //   print(
+                                                                          //       'remove value');
+                                                                          //   _checkedItem[x][
+                                                                          //           'checkedValues']
+                                                                          //       .remove(_loadedAuditTemplatelist[x]['Answer'][index]
+                                                                          //               [
+                                                                          //               'ansID']
+                                                                          //           .toString());
+                                                                          // }
+                                                                          if (_checkedItem[x]['checkedValues'].contains(_loadedAuditTemplatelist[x]['Answer'][index]
+                                                                              [
+                                                                              'ansID'])) {
+                                                                            _checkedItem[x]['checkedValues'].remove(_loadedAuditTemplatelist[x]['Answer'][index]['ansID'].toString());
+                                                                          } else {
+                                                                            _checkedItem[x]['checkedValues'].add(_loadedAuditTemplatelist[x]['Answer'][index]['ansID'].toString());
+                                                                          }
+                                                                        });
 
-                                                            payload = '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
-                                                                _selectedAuditID[
-                                                                        0][
-                                                                    'AuditID'] +
-                                                                '","QueNo":"' +
-                                                                _selectedGrpValue[
-                                                                        x]['id']
-                                                                    .toString() +
-                                                                '", "AnsSelected":"' +
-                                                                _checkedItem[x][
-                                                                        'checkedValues']
-                                                                    .toString() +
-                                                                '", "AnsType":"3"}';
-                                                            cFun
-                                                                .callAPI(
-                                                                    payload)
-                                                                .then((data) {
-                                                              setState(() {
-                                                                getAuditTemplate(
-                                                                    _selectedIndustryID,
-                                                                    _slectedCompanyID,
-                                                                    _selectedSDG);
-                                                              });
-                                                            });
-                                                          },
-                                                          controlAffinity:
-                                                              ListTileControlAffinity
-                                                                  .leading, // puts checkbox before the text
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                ]
+                                                                        payload = '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
+                                                                            _selectedAuditID[0]['AuditID'] +
+                                                                            '","QueNo":"' +
+                                                                            _selectedGrpValue[x]['id'].toString() +
+                                                                            '", "AnsSelected":"' +
+                                                                            _checkedItem[x]['checkedValues'].toString() +
+                                                                            '", "AnsType":"3"}';
+                                                                        cFun
+                                                                            .callAPI(payload)
+                                                                            .then((data) {
+                                                                          setState(
+                                                                              () {
+                                                                            getAuditTemplate(
+                                                                                _selectedIndustryID,
+                                                                                _slectedCompanyID,
+                                                                                _selectedSDG);
+                                                                          });
+                                                                        });
+                                                                      },
+                                                                      controlAffinity:
+                                                                          ListTileControlAffinity
+                                                                              .leading, // puts checkbox before the text
+                                                                    );
+                                                                  },
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child:
+                                                                    Container(
+                                                                  width: 300,
+                                                                  child:
+                                                                      TextField(
+                                                                    decoration:
+                                                                        InputDecoration(
+                                                                      border:
+                                                                          OutlineInputBorder(),
+                                                                      hintText:
+                                                                          'Enter comment here',
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+
+                                                        // external
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  100, 0, 0, 0),
+                                                          child: Container(
+                                                            decoration: BoxDecoration(
+                                                                border: Border(
+                                                                    left: BorderSide(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        width:
+                                                                            2))),
+                                                            child: Column(
+                                                              children: [
+                                                                Container(
+                                                                  height: 200,
+                                                                  width: 300,
+                                                                  child: ListView
+                                                                      .builder(
+                                                                    itemCount: _loadedAuditTemplatelist[x]
+                                                                            [
+                                                                            'Answer']
+                                                                        .length,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      // dynamic _checkedItem;
+                                                                      return CheckboxListTile(
+                                                                        title: Text(_loadedAuditTemplatelist[x]['Answer'][index]
+                                                                            [
+                                                                            'Option']),
+                                                                        value:
+                                                                            // if ((_loadedAuditTemplatelist[ x] [ 'Answer'] [index][ 'ansID']) in (_checkedItem[x] [ 'checkedValues'])){true},
+                                                                            _checkedItem[x]['checkedValues'].contains(_loadedAuditTemplatelist[x]['Answer'][index]['ansID']), // _selectedOption:20, value: true
+                                                                        // _loadedAuditTemplatelist[
+                                                                        //                 x]
+                                                                        //             [
+                                                                        //             'SelectedAns'] ==
+                                                                        //         '-'
+                                                                        //     ? _checkedItem[
+                                                                        //                 x]
+                                                                        //             [
+                                                                        //             'checkedValues']
+                                                                        //         .contains(
+                                                                        //             _loadedAuditTemplatelist[x]['Answer'][index]
+                                                                        //                 [
+                                                                        //                 'ansID'])
+                                                                        //     : checkForCheckedValues(
+                                                                        //         _loadedAuditTemplatelist[
+                                                                        //                 x]
+                                                                        //             [
+                                                                        //             'SelectedAns'],
+                                                                        //         _loadedAuditTemplatelist[x]['Answer']
+                                                                        //                 [
+                                                                        //                 index]
+                                                                        //             [
+                                                                        //             'ansID'],
+                                                                        //       ), // _selectedOption:20, value: true
+                                                                        onChanged:
+                                                                            (value) {
+                                                                          setState(
+                                                                              () {
+                                                                            // if already present then remove otherwise add checked options
+                                                                            // if (value!) {
+                                                                            //   print(
+                                                                            //       'insert value');
+                                                                            //   _checkedItem[x][
+                                                                            //           'checkedValues']
+                                                                            //       .add(_loadedAuditTemplatelist[x]['Answer'][index]
+                                                                            //               [
+                                                                            //               'ansID']
+                                                                            //           .toString());
+                                                                            // } else {
+                                                                            //   print(
+                                                                            //       'remove value');
+                                                                            //   _checkedItem[x][
+                                                                            //           'checkedValues']
+                                                                            //       .remove(_loadedAuditTemplatelist[x]['Answer'][index]
+                                                                            //               [
+                                                                            //               'ansID']
+                                                                            //           .toString());
+                                                                            // }
+                                                                            if (_checkedItem[x]['checkedValues'].contains(_loadedAuditTemplatelist[x]['Answer'][index]['ansID'])) {
+                                                                              _checkedItem[x]['checkedValues'].remove(_loadedAuditTemplatelist[x]['Answer'][index]['ansID'].toString());
+                                                                            } else {
+                                                                              _checkedItem[x]['checkedValues'].add(_loadedAuditTemplatelist[x]['Answer'][index]['ansID'].toString());
+                                                                            }
+                                                                          });
+
+                                                                          payload = '{"opnfor":"100000", "act":"A-07", "AuditID":"' +
+                                                                              _selectedAuditID[0]['AuditID'] +
+                                                                              '","QueNo":"' +
+                                                                              _selectedGrpValue[x]['id'].toString() +
+                                                                              '", "AnsSelected":"' +
+                                                                              _checkedItem[x]['checkedValues'].toString() +
+                                                                              '", "AnsType":"3"}';
+                                                                          cFun
+                                                                              .callAPI(payload)
+                                                                              .then((data) {
+                                                                            setState(() {
+                                                                              getAuditTemplate(_selectedIndustryID, _slectedCompanyID, _selectedSDG);
+                                                                            });
+                                                                          });
+                                                                        },
+                                                                        controlAffinity:
+                                                                            ListTileControlAffinity.leading, // puts checkbox before the text
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child:
+                                                                      Container(
+                                                                    width: 300,
+                                                                    child:
+                                                                        TextField(
+                                                                      decoration:
+                                                                          InputDecoration(
+                                                                        border:
+                                                                            OutlineInputBorder(),
+                                                                        hintText:
+                                                                            'Enter comment here',
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        // end of external auditor
+                                                      ] // if else condition
+                                                    ]),
                                               ],
                                             ),
                                           ),

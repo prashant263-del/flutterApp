@@ -7,6 +7,7 @@ import 'package:flutter_demo_app/pages/login_page.dart';
 // import '../pages/profile.dart';
 import '../pages/auditors/createNewAudit_1.dart';
 import '../pages/auditors/testCode.dart';
+import '../pages/auditors/testPage.dart';
 import '../pages/getData.dart';
 import '../pages/profile_old.dart';
 import '../pages/auditors/recentAudits.dart';
@@ -81,21 +82,21 @@ class MyDrawer extends StatelessWidget {
           //         builder: (BuildContext context) => GetData()));
           //   },
           // ),
-          // ListTile(
-          //   leading: Icon(
-          //     CupertinoIcons.info,
-          //     color: Colors.black,
-          //   ),
-          //   title: Text(
-          //     "Profile",
-          //     textScaleFactor: 1.2,
-          //   ),
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //     Navigator.of(context).push(MaterialPageRoute(
-          //         builder: (BuildContext context) => Profile()));
-          //   },
-          // ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.info,
+              color: Colors.black,
+            ),
+            title: Text(
+              "TestPage",
+              textScaleFactor: 1.2,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => testPage()));
+            },
+          ),
           ListTile(
             leading: Icon(
               CupertinoIcons.info,
