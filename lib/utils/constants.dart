@@ -9,3 +9,4 @@ const bgColor = Color.fromARGB(255, 255, 255, 255);
 const defaultPadding = 16.0;
 const appBarColor = Colors.deepPurpleAccent;
 String UserID = "prashant";
+dynamic UserDetails;

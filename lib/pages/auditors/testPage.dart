@@ -927,7 +927,7 @@ class _NewAuditState extends State<testPage> {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  RecentAudits()));
+                                                  RecentAudits(userID: '1')));
                                     },
                                     child: const Text("Cancel"),
                                   ),

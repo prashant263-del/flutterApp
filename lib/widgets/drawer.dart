@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_demo_app/pages/auditors/auditors_homepage.dart';
 import 'package:flutter_demo_app/pages/login_page.dart';
-// import '../pages/profile.dart';
+import '../pages/admin/addAuditorByCompanyAdmin.dart';
+import '../pages/admin/addAuditorBySEBIadmin.dart';
 import '../pages/auditors/createNewAudit_1.dart';
 import '../pages/auditors/testCode.dart';
 import '../pages/auditors/testPage.dart';
@@ -35,38 +36,38 @@ class MyDrawer extends StatelessWidget {
             //   ),
             // ),
           ),
-          ListTile(
-            leading: Icon(
-              CupertinoIcons.home,
-              color: Colors.black,
-            ),
-            title: Text(
-              "Home",
-              textScaleFactor: 1.2,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => HomePage()));
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              CupertinoIcons.news,
-              color: Colors.black,
-            ),
-            title: Text(
-              "Info",
-              textScaleFactor: 1.2,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => NewAudit()
-                  // Screen1()
-                  ));
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(
+          //     CupertinoIcons.home,
+          //     color: Colors.black,
+          //   ),
+          //   title: Text(
+          //     "Home",
+          //     textScaleFactor: 1.2,
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (BuildContext context) => HomePage()));
+          //   },
+          // ),
+          // ListTile(
+          //   leading: Icon(
+          //     CupertinoIcons.news,
+          //     color: Colors.black,
+          //   ),
+          //   title: Text(
+          //     "Info",
+          //     textScaleFactor: 1.2,
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (BuildContext context) => NewAudit()
+          //         // Screen1()
+          //         ));
+          //   },
+          // ),
           // ListTile(
           //   leading: Icon(
           //     CupertinoIcons.info,
@@ -82,24 +83,24 @@ class MyDrawer extends StatelessWidget {
           //         builder: (BuildContext context) => GetData()));
           //   },
           // ),
+          // ListTile(
+          //   leading: Icon(
+          //     CupertinoIcons.info,
+          //     color: Colors.black,
+          //   ),
+          //   title: Text(
+          //     "TestPage",
+          //     textScaleFactor: 1.2,
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (BuildContext context) => testPage()));
+          //   },
+          // ),
           ListTile(
             leading: Icon(
-              CupertinoIcons.info,
-              color: Colors.black,
-            ),
-            title: Text(
-              "TestPage",
-              textScaleFactor: 1.2,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => testPage()));
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              CupertinoIcons.info,
+              CupertinoIcons.house_alt,
               color: Colors.black,
             ),
             title: Text(
@@ -109,12 +110,13 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => RecentAudits()));
+                  builder: (BuildContext context) =>
+                      RecentAudits(userID: '1')));
             },
           ),
           ListTile(
             leading: Icon(
-              CupertinoIcons.info,
+              CupertinoIcons.create_solid,
               color: Colors.black,
             ),
             title: Text(
@@ -127,24 +129,54 @@ class MyDrawer extends StatelessWidget {
                   builder: (BuildContext context) => NewAudit()));
             },
           ),
+          // ListTile(
+          //   leading: Icon(
+          //     CupertinoIcons.info,
+          //     color: Colors.black,
+          //   ),
+          //   title: Text(
+          //     "Auditor Master",
+          //     textScaleFactor: 1.2,
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (BuildContext context) => AuditorsDetails()));
+          //   },
+          // ),
           ListTile(
             leading: Icon(
-              CupertinoIcons.info,
+              CupertinoIcons.person_add,
               color: Colors.black,
             ),
             title: Text(
-              "Test Code",
+              "Add Auditor SEBI-Admin",
               textScaleFactor: 1.2,
             ),
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => TestCode()));
+                  builder: (BuildContext context) => ExternalAuditorDetails()));
             },
           ),
           ListTile(
             leading: Icon(
-              CupertinoIcons.info,
+              CupertinoIcons.person_add,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Add Auditor Company-Admin",
+              textScaleFactor: 1.2,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => InternalAuditorDetails()));
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              CupertinoIcons.return_icon,
               color: Colors.black,
             ),
             title: Text(

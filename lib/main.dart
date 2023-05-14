@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 // import 'package:flutter_demo_app/pages/auditors/createNewAudit_1.dart';
+import 'package:flutter_demo_app/pages/admin/addAuditorBySEBIadmin.dart';
 import 'package:flutter_demo_app/pages/auditors/createNewAudit.dart';
 import 'package:flutter_demo_app/pages/auditors/recentAudits.dart';
 import 'package:flutter_demo_app/pages/auditors/testCode.dart';
@@ -40,12 +41,12 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/",
       routes: {
-        "/": (context) => NewAudit(), // HomePage
+        "/": (context) => LoginPage(),
         MyRoutes.homeRoute: (context) => HomePage(),
-        MyRoutes.homeRoute: (context) => NewAudit(),
-        MyRoutes.loginRoute: (context) => Profile(),
-        MyRoutes.loginRoute: (context) => Screen1(),
-        MyRoutes.recentAudits: (context) => RecentAudits()
+        MyRoutes.homeRoute: (context) => NewAudit(userID: '1'),
+        // MyRoutes.loginRoute: (context) => Profile(),
+        // MyRoutes.loginRoute: (context) => Screen1(),
+        MyRoutes.recentAudits: (context) => RecentAudits(userID: '1')
         // AuditorsHomepage(),
       },
     );

@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_demo_app/utils/constants.dart';
+import '../utils/common.dart';
 import '../utils/routes.dart';
+import 'auditors/recentAudits.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,16 +14,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  List<dynamic> _userDetails = [];
+  String payload = "";
+  commonFunctions cFun = new commonFunctions();
   String name = '';
   bool changeButton = false;
 
   final _formkey = GlobalKey<FormState>();
-  moveToHome(BuildContext context) async {
+  moveToHome(BuildContext context, userName) async {
+    String username = userName;
+
+    // payload = '{"opnfor":"100000", "act":"A-Login"}';
+    // cFun.callAPI(payload).then((data) {
+    //   setState(() {
+    //     _userDetails = data['header'];
+    //   });
+    // });
+    String userID = '1';
     setState(() {
       changeButton = true;
     });
     await Future.delayed(Duration(seconds: 1));
-    await Navigator.pushNamed(context, MyRoutes.recentAudits);
+    await Navigator.pushNamed(
+      context,
+      "/RecentAudits",
+      arguments: RecentAudits(userID: userID),
+    );
     setState(() {
       changeButton = false;
     });
@@ -95,7 +114,12 @@ class _LoginPageState extends State<LoginPage> {
                                 BorderRadius.circular(changeButton ? 50 : 8),
                             child: InkWell(
                               splashColor: Colors.red,
-                              onTap: () => moveToHome(context),
+                              onTap: () => moveToHome(context, name),
+                              //                               onTap: () {
+                              //   Navigator.pop(context);
+                              //   Navigator.of(context).push(MaterialPageRoute(
+                              //       builder: (BuildContext context) => RecentAudits(userID: '1')));
+                              // },
                               child: AnimatedContainer(
                                 duration: Duration(milliseconds: 100),
                                 width: changeButton ? 50 : 150,

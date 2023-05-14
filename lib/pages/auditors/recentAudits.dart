@@ -7,12 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo_app/pages/homepage.dart';
 import 'package:http/http.dart' as http;
 
+import '../../utils/common.dart';
 import '../../widgets/drawer.dart';
 import '../../widgets/drawer.dart';
 import 'createNewAudit.dart';
 // test commit
 
 class RecentAudits extends StatefulWidget {
+  final String userID;
+  const RecentAudits({super.key, required this.userID});
   @override
   _RecentAudits createState() => _RecentAudits();
 }
@@ -24,9 +27,11 @@ class _RecentAudits extends State<RecentAudits> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _fetchData(widget.userID));
   }
 
+  commonFunctions cFun = commonFunctions();
   // Future<void> _fetchData() async {
   //   const apiUrl =
   //       'https://hclwdc701d.execute-api.ap-south-1.amazonaws.com/Development/fluttertest';
@@ -40,10 +45,8 @@ class _RecentAudits extends State<RecentAudits> {
   //   });
   // }
 
-  Future<void> _fetchData() async {
+  Future<void> _fetchData(userID) async {
     const apiUrl = 'http://127.0.0.1:5000';
-
-    // final response = await http.get(Uri.parse(apiUrl));
 
     final response = await http.get(
       Uri.parse(apiUrl),
@@ -61,10 +64,6 @@ class _RecentAudits extends State<RecentAudits> {
     });
   }
 
-  Color getColor(Set<MaterialState> states) {
-    return Color.fromARGB(255, 211, 211, 211);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,6 +72,9 @@ class _RecentAudits extends State<RecentAudits> {
         title: const Text(header),
         centerTitle: true,
         // backgroundColor: Colors.blue,
+        actions: <Widget>[
+          cFun.getProfileMenu(context),
+        ],
       ),
       body: SafeArea(
         child: (Column(
@@ -80,12 +82,14 @@ class _RecentAudits extends State<RecentAudits> {
             Align(
               alignment: Alignment.topRight,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 15, 280, 0),
+                padding: const EdgeInsets.fromLTRB(10, 15, 170, 0),
                 child: ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pop(context);
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => NewAudit()));
+                        builder: (BuildContext context) => NewAudit(
+                            userID: widget
+                                .userID))); // passing userId for further data displaying
                   },
                   icon: Icon(Icons.add),
                   label: Text("Create New Audit"),
@@ -99,7 +103,7 @@ class _RecentAudits extends State<RecentAudits> {
                 width: 1200,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  // borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.5),
@@ -148,16 +152,16 @@ class _RecentAudits extends State<RecentAudits> {
                             color: Colors.white),
                       ),
                     ),
-                    DataColumn(
-                      label: Text(
-                        "SDG",
-                        style: TextStyle(
-                            // fontStyle: FontStyle.italic,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                    ),
+                    // DataColumn(
+                    //   label: Text(
+                    //     "SDG",
+                    //     style: TextStyle(
+                    //         // fontStyle: FontStyle.italic,
+                    //         fontSize: 20,
+                    //         fontWeight: FontWeight.bold,
+                    //         color: Colors.white),
+                    //   ),
+                    // ),
                     DataColumn(
                       label: Text(
                         "Internal Auditor",
@@ -196,13 +200,14 @@ class _RecentAudits extends State<RecentAudits> {
                     final item = _loadedData[index];
                     return DataRow(
                       color: index % 2 != 0
-                          ? MaterialStateProperty.resolveWith(getColor)
+                          ? MaterialStateProperty.resolveWith(
+                              cFun.getAlternateRowColor)
                           : null,
                       cells: [
                         DataCell(Text(item['Audit Date'].toString())),
                         DataCell(Text(item['Industry'].toString())),
                         DataCell(Text(item['Company Name'].toString())),
-                        DataCell(Text(item['SDG Name'].toString())),
+                        // DataCell(Text(item['SDG Name'].toString())),
                         DataCell(Text(item['Internal Auditor'].toString())),
                         DataCell(Text(item['External Auditor'].toString())),
                         DataCell(Text(item['Status'].toString()))
